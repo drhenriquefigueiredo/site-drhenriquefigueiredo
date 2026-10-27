@@ -36,7 +36,9 @@ date, slug (sem acento, minúsculas, hífens, até ~80 caracteres), topic (mao |
 
 ## Ritmo e fluxo
 - 15 artigos por ciclo de cobrança da Netlify (dia 13 ao dia 12), em dias alternados. As datas estão em content/calendario.json (campo date; temas sem data são reserva).
-- Toda quarta-feira: rascunhos das datas da semana seguinte (segunda a domingo) vão para a página de aprovação (coleção "artigos", id = data).
+- Todo domingo: o agente semanal (content/AGENTE_SEMANAL.md) monta o pacote da semana — relatório, posts do Instagram, roteiros de vídeo, stories, respostas a avaliações (coleção "conteudos") e os artigos da semana seguinte (coleção "artigos", id = data).
+- Instagram: 1 post por dia no máximo, às 8h, pelo Make lendo content/redes/feed.xml (servido pelo GitHub; não gasta créditos da Netlify). O Facebook recebe por compartilhamento automático do Instagram.
+- WhatsApp: as mensagens prontas dizem a origem ("Vim pelo Instagram/Google/site…"); o integracao.js troca "pelo site" pelo canal de chegada. O botão Agendar do Google abre o WhatsApp com "Vim pelo Google".
 - Dia de publicação, 6h: a tarefa diária pega o artigo aprovado mais antigo ainda não publicado e grava content/posts/<data>-<slug>.json (campos do artigo + date do dia + status "aprovado") com mcp__github__push_files. O GitHub Actions confere as capas (tools/garantir_capas.py), roda tools/build.py e grava site/ num único commit do robô (a Netlify só atualiza quando site/ muda). Depois: Google (Windsor), Instagram e Facebook (Make, pelo feed /blog/redes.xml).
 - Acesso das tarefas agendadas: leitura com git clone https://github.com/drhenriquefigueiredo/site-drhenriquefigueiredo (funciona sem senha no ambiente das tarefas); escrita SÓ com mcp__github__push_files na branch main e SÓ em content/; acompanhamento com mcp__github__actions_list. Nunca grave em site/.
 
