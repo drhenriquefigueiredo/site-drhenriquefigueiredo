@@ -1,0 +1,306 @@
+# Configuração do Netlify — Dr. Henrique Figueiredo
+[build]
+  publish = "."
+
+# Redirecionamentos das URLs antigas para as novas páginas
+[[redirects]]
+  from = "https://drhenriquefigueiredo.netlify.app/*"
+  to = "https://drhenriquefigueiredo.com.br/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tratamentos-ortopedia"
+  to = "/areas-de-atuacao/ortopedia-e-traumatologia/"
+  status = 301
+[[redirects]]
+  from = "/tratamentos-cirurgia-da-m%C3%A3o"
+  to = "/areas-de-atuacao/cirurgia-da-mao/"
+  status = 301
+[[redirects]]
+  from = "/tratamentos-cirurgia-da-mão"
+  to = "/areas-de-atuacao/cirurgia-da-mao/"
+  status = 301
+[[redirects]]
+  from = "/tratamentos-cirurgia-da-mao"
+  to = "/areas-de-atuacao/cirurgia-da-mao/"
+  status = 301
+[[redirects]]
+  from = "/tratamentos"
+  to = "/areas-de-atuacao/"
+  status = 301
+[[redirects]]
+  from = "/especialidades/ortopedia/*"
+  to = "/areas-de-atuacao/ortopedia-e-traumatologia/"
+  status = 301
+[[redirects]]
+  from = "/especialidades/traumatologia/*"
+  to = "/areas-de-atuacao/ortopedia-e-traumatologia/"
+  status = 301
+[[redirects]]
+  from = "/especialidades/cirurgia-da-mao/*"
+  to = "/areas-de-atuacao/cirurgia-da-mao/"
+  status = 301
+[[redirects]]
+  from = "/especialidades/dor/*"
+  to = "/areas-de-atuacao/medicina-regenerativa-e-dor/"
+  status = 301
+[[redirects]]
+  from = "/especialidades/medicina-regenerativa/*"
+  to = "/areas-de-atuacao/medicina-regenerativa-e-dor/"
+  status = 301
+[[redirects]]
+  from = "/especialidades/*"
+  to = "/areas-de-atuacao/"
+  status = 301
+[[redirects]]
+  from = "/especialidades"
+  to = "/areas-de-atuacao/"
+  status = 301
+[[redirects]]
+  from = "/politicadeprivacidade"
+  to = "/privacidade/"
+  status = 301
+[[redirects]]
+  from = "/blog/categories/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/blog/page/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/post/o-futuro-da-ortopedia-como-a-medicina-regenerativa-est%C3%A1-mudando-os-tratamentos"
+  to = "/blog/o-futuro-da-ortopedia-como-a-medicina-regenerativa-esta-mudando-os-tratamentos/"
+  status = 301
+[[redirects]]
+  from = "/post/o-futuro-da-ortopedia-como-a-medicina-regenerativa-est%c3%a1-mudando-os-tratamentos"
+  to = "/blog/o-futuro-da-ortopedia-como-a-medicina-regenerativa-esta-mudando-os-tratamentos/"
+  status = 301
+[[redirects]]
+  from = "/post/o-futuro-da-ortopedia-como-a-medicina-regenerativa-esta-mudando-os-tratamentos"
+  to = "/blog/o-futuro-da-ortopedia-como-a-medicina-regenerativa-esta-mudando-os-tratamentos/"
+  status = 301
+[[redirects]]
+  from = "/post/o-futuro-da-ortopedia-como-a-medicina-regenerativa-está-mudando-os-tratamentos"
+  to = "/blog/o-futuro-da-ortopedia-como-a-medicina-regenerativa-esta-mudando-os-tratamentos/"
+  status = 301
+[[redirects]]
+  from = "/post/les%C3%A3o-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda"
+  to = "/blog/lesao-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda/"
+  status = 301
+[[redirects]]
+  from = "/post/les%c3%a3o-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda"
+  to = "/blog/lesao-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda/"
+  status = 301
+[[redirects]]
+  from = "/post/lesao-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda"
+  to = "/blog/lesao-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda/"
+  status = 301
+[[redirects]]
+  from = "/post/lesão-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda"
+  to = "/blog/lesao-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda/"
+  status = 301
+[[redirects]]
+  from = "/post/o-que-%C3%A9-dor-miofascial-e-por-que-ela-%C3%A9-t%C3%A3o-confundida-com-outros-problemas"
+  to = "/blog/o-que-e-dor-miofascial-e-por-que-ela-e-tao-confundida-com-outros-problemas/"
+  status = 301
+[[redirects]]
+  from = "/post/o-que-%c3%a9-dor-miofascial-e-por-que-ela-%c3%a9-t%c3%a3o-confundida-com-outros-problemas"
+  to = "/blog/o-que-e-dor-miofascial-e-por-que-ela-e-tao-confundida-com-outros-problemas/"
+  status = 301
+[[redirects]]
+  from = "/post/o-que-e-dor-miofascial-e-por-que-ela-e-tao-confundida-com-outros-problemas"
+  to = "/blog/o-que-e-dor-miofascial-e-por-que-ela-e-tao-confundida-com-outros-problemas/"
+  status = 301
+[[redirects]]
+  from = "/post/o-que-é-dor-miofascial-e-por-que-ela-é-tão-confundida-com-outros-problemas"
+  to = "/blog/o-que-e-dor-miofascial-e-por-que-ela-e-tao-confundida-com-outros-problemas/"
+  status = 301
+[[redirects]]
+  from = "/post/sedentarismo-e-dor-como-o-corpo-reage-quando-paramos-de-nos-movimentar"
+  to = "/blog/sedentarismo-e-dor-como-o-corpo-reage-quando-paramos-de-nos-movimentar/"
+  status = 301
+[[redirects]]
+  from = "/post/infiltra%C3%A7%C3%A3o-bloqueio-e-tratamentos-regenerativos-qual-a-diferen%C3%A7a"
+  to = "/blog/infiltracao-bloqueio-e-tratamentos-regenerativos-qual-a-diferenca/"
+  status = 301
+[[redirects]]
+  from = "/post/infiltra%c3%a7%c3%a3o-bloqueio-e-tratamentos-regenerativos-qual-a-diferen%c3%a7a"
+  to = "/blog/infiltracao-bloqueio-e-tratamentos-regenerativos-qual-a-diferenca/"
+  status = 301
+[[redirects]]
+  from = "/post/infiltracao-bloqueio-e-tratamentos-regenerativos-qual-a-diferenca"
+  to = "/blog/infiltracao-bloqueio-e-tratamentos-regenerativos-qual-a-diferenca/"
+  status = 301
+[[redirects]]
+  from = "/post/infiltração-bloqueio-e-tratamentos-regenerativos-qual-a-diferença"
+  to = "/blog/infiltracao-bloqueio-e-tratamentos-regenerativos-qual-a-diferenca/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-n%C3%A3o-%C3%A9-sin%C3%B4nimo-de-envelhecimento-quando-investigar"
+  to = "/blog/dor-nao-e-sinonimo-de-envelhecimento-quando-investigar/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-n%c3%a3o-%c3%a9-sin%c3%b4nimo-de-envelhecimento-quando-investigar"
+  to = "/blog/dor-nao-e-sinonimo-de-envelhecimento-quando-investigar/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-nao-e-sinonimo-de-envelhecimento-quando-investigar"
+  to = "/blog/dor-nao-e-sinonimo-de-envelhecimento-quando-investigar/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-não-é-sinônimo-de-envelhecimento-quando-investigar"
+  to = "/blog/dor-nao-e-sinonimo-de-envelhecimento-quando-investigar/"
+  status = 301
+[[redirects]]
+  from = "/post/medicina-regenerativa-o-que-realmente-%C3%A9-e-para-quem-pode-ser-indicada"
+  to = "/blog/medicina-regenerativa-o-que-realmente-e-e-para-quem-pode-ser-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/medicina-regenerativa-o-que-realmente-%c3%a9-e-para-quem-pode-ser-indicada"
+  to = "/blog/medicina-regenerativa-o-que-realmente-e-e-para-quem-pode-ser-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/medicina-regenerativa-o-que-realmente-e-e-para-quem-pode-ser-indicada"
+  to = "/blog/medicina-regenerativa-o-que-realmente-e-e-para-quem-pode-ser-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/medicina-regenerativa-o-que-realmente-é-e-para-quem-pode-ser-indicada"
+  to = "/blog/medicina-regenerativa-o-que-realmente-e-e-para-quem-pode-ser-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-cr%C3%B4nica-por-que-algumas-dores-persistem-mesmo-ap%C3%B3s-exames-normais"
+  to = "/blog/dor-cronica-por-que-algumas-dores-persistem-mesmo-apos-exames-normais/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-cr%c3%b4nica-por-que-algumas-dores-persistem-mesmo-ap%c3%b3s-exames-normais"
+  to = "/blog/dor-cronica-por-que-algumas-dores-persistem-mesmo-apos-exames-normais/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-cronica-por-que-algumas-dores-persistem-mesmo-apos-exames-normais"
+  to = "/blog/dor-cronica-por-que-algumas-dores-persistem-mesmo-apos-exames-normais/"
+  status = 301
+[[redirects]]
+  from = "/post/dor-crônica-por-que-algumas-dores-persistem-mesmo-após-exames-normais"
+  to = "/blog/dor-cronica-por-que-algumas-dores-persistem-mesmo-apos-exames-normais/"
+  status = 301
+[[redirects]]
+  from = "/post/prp-plasma-rico-em-plaquetas-tratamento"
+  to = "/blog/prp-plasma-rico-em-plaquetas-tratamento/"
+  status = 301
+[[redirects]]
+  from = "/post/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-ap%C3%B3s-o-tratamento"
+  to = "/blog/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-apos-o-tratamento/"
+  status = 301
+[[redirects]]
+  from = "/post/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-ap%c3%b3s-o-tratamento"
+  to = "/blog/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-apos-o-tratamento/"
+  status = 301
+[[redirects]]
+  from = "/post/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-apos-o-tratamento"
+  to = "/blog/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-apos-o-tratamento/"
+  status = 301
+[[redirects]]
+  from = "/post/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-após-o-tratamento"
+  to = "/blog/cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-apos-o-tratamento/"
+  status = 301
+[[redirects]]
+  from = "/post/tenossinovite-de-de-quervain-tem-solu%C3%A7%C3%A3o"
+  to = "/blog/tenossinovite-de-de-quervain-tem-solucao/"
+  status = 301
+[[redirects]]
+  from = "/post/tenossinovite-de-de-quervain-tem-solu%c3%a7%c3%a3o"
+  to = "/blog/tenossinovite-de-de-quervain-tem-solucao/"
+  status = 301
+[[redirects]]
+  from = "/post/tenossinovite-de-de-quervain-tem-solucao"
+  to = "/blog/tenossinovite-de-de-quervain-tem-solucao/"
+  status = 301
+[[redirects]]
+  from = "/post/tenossinovite-de-de-quervain-tem-solução"
+  to = "/blog/tenossinovite-de-de-quervain-tem-solucao/"
+  status = 301
+[[redirects]]
+  from = "/post/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-s%C3%A3o-os-tratamentos-poss%C3%ADveis"
+  to = "/blog/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-sao-os-tratamentos-possiveis/"
+  status = 301
+[[redirects]]
+  from = "/post/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-s%c3%a3o-os-tratamentos-poss%c3%adveis"
+  to = "/blog/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-sao-os-tratamentos-possiveis/"
+  status = 301
+[[redirects]]
+  from = "/post/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-sao-os-tratamentos-possiveis"
+  to = "/blog/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-sao-os-tratamentos-possiveis/"
+  status = 301
+[[redirects]]
+  from = "/post/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-são-os-tratamentos-possíveis"
+  to = "/blog/dedo-em-gatilho-por-que-o-dedo-trava-e-quais-sao-os-tratamentos-possiveis/"
+  status = 301
+[[redirects]]
+  from = "/post/t%C3%BAnel-do-carpo-causas-sintomas-e-quando-a-cirurgia-%C3%A9-indicada"
+  to = "/blog/tunel-do-carpo-causas-sintomas-e-quando-a-cirurgia-e-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/t%c3%banel-do-carpo-causas-sintomas-e-quando-a-cirurgia-%c3%a9-indicada"
+  to = "/blog/tunel-do-carpo-causas-sintomas-e-quando-a-cirurgia-e-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/tunel-do-carpo-causas-sintomas-e-quando-a-cirurgia-e-indicada"
+  to = "/blog/tunel-do-carpo-causas-sintomas-e-quando-a-cirurgia-e-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/túnel-do-carpo-causas-sintomas-e-quando-a-cirurgia-é-indicada"
+  to = "/blog/tunel-do-carpo-causas-sintomas-e-quando-a-cirurgia-e-indicada/"
+  status = 301
+[[redirects]]
+  from = "/post/j%C3%A1-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta"
+  to = "/blog/ja-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta/"
+  status = 301
+[[redirects]]
+  from = "/post/j%c3%a1-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta"
+  to = "/blog/ja-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta/"
+  status = 301
+[[redirects]]
+  from = "/post/ja-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta"
+  to = "/blog/ja-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta/"
+  status = 301
+[[redirects]]
+  from = "/post/já-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta"
+  to = "/blog/ja-ouviu-falar-sobre-o-ombro-e-cotovelo-do-atleta/"
+  status = 301
+[[redirects]]
+  from = "/post/uso-excessivo-de-celular-e-dor-nas-m%C3%A3os"
+  to = "/blog/uso-excessivo-de-celular-e-dor-nas-maos/"
+  status = 301
+[[redirects]]
+  from = "/post/uso-excessivo-de-celular-e-dor-nas-m%c3%a3os"
+  to = "/blog/uso-excessivo-de-celular-e-dor-nas-maos/"
+  status = 301
+[[redirects]]
+  from = "/post/uso-excessivo-de-celular-e-dor-nas-maos"
+  to = "/blog/uso-excessivo-de-celular-e-dor-nas-maos/"
+  status = 301
+[[redirects]]
+  from = "/post/uso-excessivo-de-celular-e-dor-nas-mãos"
+  to = "/blog/uso-excessivo-de-celular-e-dor-nas-maos/"
+  status = 301
+[[redirects]]
+  from = "/post/cisto-sinovial-no-punho-causas-sintomas-e-tratamentos"
+  to = "/blog/cisto-sinovial-no-punho-causas-sintomas-e-tratamentos/"
+  status = 301
+[[redirects]]
+  from = "/post/*"
+  to = "/blog/"
+  status = 301
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

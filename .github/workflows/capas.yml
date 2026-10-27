@@ -1,0 +1,37 @@
+name: Gerar capas com IA
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["content/capas/pedidos/**"]
+permissions:
+  contents: write
+concurrency: capas
+jobs:
+  capas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-lcm-dreamshaper-v7
+      - run: |
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet "diffusers>=0.30" transformers accelerate pillow
+      - run: python3 tools/ia_imagem.py
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      - name: Gravar capas (fora da pasta do site)
+        run: |
+          git config user.name "Capas automáticas"
+          git config user.email "contato.drhenriquefigueiredo@gmail.com"
+          git add -A content/capas
+          if git diff --cached --quiet; then echo "Sem capas novas."; exit 0; fi
+          git commit -m "Capas geradas com IA"
+          git pull --rebase -q origin main
+          git push

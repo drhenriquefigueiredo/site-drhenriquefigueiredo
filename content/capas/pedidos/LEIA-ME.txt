@@ -1,0 +1,1 @@
+Pedidos de capa: um arquivo <slug>.json por artigo, com slug, title, topic e prompt (em inglês).

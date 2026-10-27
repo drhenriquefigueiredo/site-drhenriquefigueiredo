@@ -1,0 +1,49 @@
+name: Publicar artigos do dia
+on:
+  schedule:
+    - cron: "5 9 * * *"   # 06:05 em Brasília (rede de segurança)
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["content/posts/**", "content/capas/**"]
+permissions:
+  contents: write
+concurrency: publicar
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Conferir capas dos artigos aprovados
+        run: |
+          pip install --quiet pillow
+          python3 tools/garantir_capas.py
+      - id: build
+        run: |
+          python3 tools/build.py | tee saida.json
+          echo "novos=$(python3 -c 'import json;print(" ".join(json.load(open("saida.json"))["publicados_hoje"]))')" >> "$GITHUB_OUTPUT"
+      # O commit de publicação é do robô do GitHub: no plano gratuito, a Netlify só constrói
+      # commits do dono da conta ou de robôs. Outros commits (rascunhos, capas) são bloqueados sem custo.
+      - name: Gravar alterações (uma única atualização do site)
+        id: grava
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A site
+          if git diff --cached --quiet; then echo "Nada novo para publicar hoje."; echo "mudou=0" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git add -A content/posts content/capas   # capas/normalização feitas na hora vão no mesmo commit
+          git commit -m "Publica artigos de $(TZ=America/Sao_Paulo date +%F)"
+          git pull --rebase -q origin main
+          git push
+          echo "mudou=1" >> "$GITHUB_OUTPUT"
+      - name: Avisar buscadores (IndexNow)
+        if: steps.grava.outputs.mudou == '1'
+        run: |
+          sleep 120
+          URLS='"https://drhenriquefigueiredo.com.br/","https://drhenriquefigueiredo.com.br/blog/","https://drhenriquefigueiredo.com.br/sitemap.xml"'
+          for s in ${{ steps.build.outputs.novos }}; do URLS="$URLS,\"https://drhenriquefigueiredo.com.br/blog/$s/\""; done
+          curl -s -o /dev/null -w "IndexNow: %{http_code}\n" -X POST https://api.indexnow.org/indexnow \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{\"host\":\"drhenriquefigueiredo.com.br\",\"key\":\"b7d4e2a9c1f84f3e9a6d5c2b8e1f0a47\",\"keyLocation\":\"https://drhenriquefigueiredo.com.br/b7d4e2a9c1f84f3e9a6d5c2b8e1f0a47.txt\",\"urlList\":[$URLS]}"
