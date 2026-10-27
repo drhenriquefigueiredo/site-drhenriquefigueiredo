@@ -32,6 +32,6 @@ jobs:
           git config user.email "contato.drhenriquefigueiredo@gmail.com"
           git add -A content/capas
           if git diff --cached --quiet; then echo "Sem capas novas."; exit 0; fi
-          git commit -m "Capas geradas com IA"
+          git commit -m "Capas geradas com IA [skip netlify]"
           git pull --rebase -q origin main
           git push

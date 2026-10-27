@@ -3,6 +3,7 @@
  * 1) Aviso de cookies (LGPD) ligado ao Consent Mode do Google
  * 2) Eventos de conversão enviados ao Google Tag Manager (dataLayer):
  *    whatsapp_click, phone_click, map_click, email_click, social_click
+ * 3) Origem do paciente na mensagem do WhatsApp ("Vim pelo Instagram…")
  * Não envia nenhum dado pessoal ou de saúde: só o tipo de clique e a seção da página.
  */
 (function () {
@@ -50,6 +51,44 @@
     else montarBanner();
   }
 
+  // ---------- Origem do paciente no WhatsApp ----------
+  // A mensagem pronta do WhatsApp diz por onde a pessoa chegou ("Vim pelo Instagram…"),
+  // para a secretária saber quais canais trazem pacientes. Nada pessoal é guardado.
+  var ORIG_KEY = 'dhf_origem';
+  var NOMES = { instagram: 'Instagram', ig: 'Instagram', facebook: 'Facebook', fb: 'Facebook', tiktok: 'TikTok',
+    google: 'Google', gbp: 'Google', maps: 'Google Maps', youtube: 'YouTube', bing: 'Bing', chatgpt: 'ChatGPT',
+    perplexity: 'Perplexity', gemini: 'Gemini', copilot: 'Copilot', email: 'e-mail', whatsapp: 'WhatsApp' };
+  function origemAtual() {
+    var q = new URLSearchParams(location.search);
+    var v = (q.get('o') || q.get('utm_source') || '').toLowerCase();
+    if (!v && document.referrer) {
+      try {
+        var h = new URL(document.referrer).hostname;
+        if (h !== location.hostname) {
+          var mapa = [['instagram', 'instagram'], ['facebook', 'facebook'], ['fb.', 'facebook'], ['tiktok', 'tiktok'],
+            ['maps.google', 'maps'], ['google', 'google'], ['bing', 'bing'], ['chatgpt', 'chatgpt'], ['openai', 'chatgpt'],
+            ['perplexity', 'perplexity'], ['gemini', 'gemini'], ['copilot', 'copilot'], ['youtube', 'youtube']];
+          for (var i = 0; i < mapa.length; i++) if (h.indexOf(mapa[i][0]) > -1) { v = mapa[i][1]; break; }
+        }
+      } catch (e) {}
+    }
+    if (!v && location.pathname.indexOf('/links') === 0) v = 'instagram';
+    if (v && NOMES[v]) { try { sessionStorage.setItem(ORIG_KEY, v); } catch (e) {} return v; }
+    try { return sessionStorage.getItem(ORIG_KEY) || ''; } catch (e) { return ''; }
+  }
+  var ORIGEM = origemAtual();
+  function marcarWhatsApp() {
+    if (!ORIGEM || !NOMES[ORIGEM]) return;
+    var links = document.querySelectorAll('a[href*="wa.me/"]');
+    for (var i = 0; i < links.length; i++) {
+      try {
+        var u = new URL(links[i].href), t = u.searchParams.get('text');
+        if (t && t.indexOf('pelo site') > -1) { u.searchParams.set('text', t.replace('pelo site', 'pelo ' + NOMES[ORIGEM])); links[i].href = u.toString(); }
+      } catch (e) {}
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', marcarWhatsApp); else marcarWhatsApp();
+
   // ---------- Eventos de conversão ----------
   function secao(el) {
     if (el.closest('header, .site-header')) return 'cabecalho';
@@ -82,7 +121,7 @@
     else if (/google\.[^/]+\/maps|maps\.app\.goo\.gl|goo\.gl\/maps|waze\.com/i.test(h)) ev = 'map_click';
     else if (rede(h)) { ev = 'social_click'; extra.social_network = rede(h); }
     if (!ev) return;
-    var dados = { event: ev, cta_location: secao(a), link_url: h.split('?')[0] };
+    var dados = { event: ev, cta_location: secao(a), link_url: h.split('?')[0], origem: ORIGEM || 'site' };
     for (var k in extra) dados[k] = extra[k];
     window.dataLayer.push(dados);
   }, true);

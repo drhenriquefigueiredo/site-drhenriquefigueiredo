@@ -5,7 +5,7 @@ on:
   workflow_dispatch: {}
   push:
     branches: [main]
-    paths: ["content/posts/**", "content/capas/**"]
+    paths: ["content/posts/**", "content/capas/**", "content/redes/fila/**"]
 permissions:
   contents: write
 concurrency: publicar
@@ -24,20 +24,25 @@ jobs:
         run: |
           python3 tools/build.py | tee saida.json
           echo "novos=$(python3 -c 'import json;print(" ".join(json.load(open("saida.json"))["publicados_hoje"]))')" >> "$GITHUB_OUTPUT"
-      # O commit de publicação é do robô do GitHub: no plano gratuito, a Netlify só constrói
-      # commits do dono da conta ou de robôs. Outros commits (rascunhos, capas) são bloqueados sem custo.
-      - name: Gravar alterações (uma única atualização do site)
+      - name: Feed das redes (fora do site, servido pelo GitHub)
+        run: python3 tools/redes.py
+      # Créditos da Netlify: só um commit que muda site/ gera publicação (15 créditos).
+      # Quando só content/ muda, o commit leva [skip netlify] e não gasta nada.
+      - name: Gravar alterações
         id: grava
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          HOJE=$(TZ=America/Sao_Paulo date +%F)
           git add -A site
-          if git diff --cached --quiet; then echo "Nada novo para publicar hoje."; echo "mudou=0" >> "$GITHUB_OUTPUT"; exit 0; fi
-          git add -A content/posts content/capas   # capas/normalização feitas na hora vão no mesmo commit
-          git commit -m "Publica artigos de $(TZ=America/Sao_Paulo date +%F)"
+          if git diff --cached --quiet; then SITE=0; else SITE=1; fi
+          git add -A content/posts content/capas content/redes
+          if git diff --cached --quiet; then echo "Nada novo hoje."; echo "mudou=0" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "$SITE" = 1 ]; then MSG="Publica artigos de $HOJE"; else MSG="Atualiza o feed das redes de $HOJE [skip netlify]"; fi
+          git commit -m "$MSG"
           git pull --rebase -q origin main
           git push
-          echo "mudou=1" >> "$GITHUB_OUTPUT"
+          echo "mudou=$SITE" >> "$GITHUB_OUTPUT"
       - name: Avisar buscadores (IndexNow)
         if: steps.grava.outputs.mudou == '1'
         run: |
