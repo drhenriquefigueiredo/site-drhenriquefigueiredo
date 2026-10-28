@@ -55,10 +55,12 @@ def pollinations(p):
     seed = p.get('seed') or int(hashlib.md5(p['slug'].encode()).hexdigest(), 16) % 100000
     prompt = urllib.parse.quote(f"{p['prompt']}, {ESTILO_FOTO}, {SEM}")
     url = f"https://image.pollinations.ai/prompt/{prompt}?width=1280&height=1024&model=flux&nologo=true&private=true&enhance=false&seed={seed}"
-    for tentativa in range(3):
+    for tentativa in range(2):
         try:
+            t0 = time.time()
             req = urllib.request.Request(url, headers={'User-Agent': 'drhenriquefigueiredo-capas/1.0'})
-            dados = urllib.request.urlopen(req, timeout=180).read()
+            dados = urllib.request.urlopen(req, timeout=90).read()
+            print(f"  resposta em {time.time() - t0:.0f}s, {len(dados)} bytes", flush=True)
             img = Image.open(io.BytesIO(dados)).convert('RGB')
             if img.size[0] < 600:
                 raise ValueError(f'imagem pequena {img.size}')
@@ -66,8 +68,8 @@ def pollinations(p):
             print(f"imagem {p['slug']}: FLUX (pollinations) seed {seed}")
             return True
         except Exception as e:
-            print(f"pollinations falhou para {p['slug']} (tentativa {tentativa + 1}): {e}")
-            time.sleep(20)
+            print(f"pollinations falhou para {p['slug']} (tentativa {tentativa + 1}): {e}", flush=True)
+            time.sleep(15)
     return False
 
 
