@@ -1,0 +1,28 @@
+name: Opções de imagem
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["content/capas/candidatas/pedidos.json"]
+permissions:
+  contents: write
+concurrency: candidatas
+jobs:
+  candidatas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install --quiet pillow
+      - run: python3 tools/candidatas.py
+      - name: Gravar opções
+        run: |
+          git config user.name "Capas automáticas"
+          git config user.email "contato.drhenriquefigueiredo@gmail.com"
+          git add -A content/capas/candidatas
+          if git diff --cached --quiet; then echo "Nada novo."; exit 0; fi
+          git commit -m "Opções de imagem [skip netlify]"
+          git pull --rebase -q origin main
+          git push

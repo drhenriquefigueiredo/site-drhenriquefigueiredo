@@ -18,6 +18,8 @@ ESTILO = ('editorial medical illustration, soft realistic 3d render, calm navy b
           'clean minimal background, soft studio lighting, high detail, professional healthcare magazine style')
 SEM = 'no text, no letters, no faces, no blood'
 LAYOUT = '3'  # mude para refazer todas as capas quando o desenho (tools/capa.py) mudar
+ESTILO_FOTO = ('professional editorial photography, photorealistic, natural soft light, shallow depth of field, '
+               'muted navy blue and warm beige palette, clean minimal composition, anatomically correct')
 NEGATIVO = ('text, letters, words, watermark, logo, signature, face, portrait, blood, wound, surgery, gore, '
             'deformed hands, extra fingers, nsfw, low quality, blurry')
 
@@ -43,6 +45,30 @@ def cloudflare(p):
     img.resize((1280, 1024)).save(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"), quality=90)
     print(f"imagem {p['slug']}: Cloudflare FLUX")
     return True
+
+
+def pollinations(p):
+    """FLUX (gratuito, sem conta) via image.pollinations.ai. Muito melhor em mãos e anatomia que o modelo local.
+    O campo opcional "seed" do pedido troca a variação (use quando a imagem sair com defeito)."""
+    import io, urllib.parse, urllib.request
+    from PIL import Image
+    seed = p.get('seed') or int(hashlib.md5(p['slug'].encode()).hexdigest(), 16) % 100000
+    prompt = urllib.parse.quote(f"{p['prompt']}, {ESTILO_FOTO}, {SEM}")
+    url = f"https://image.pollinations.ai/prompt/{prompt}?width=1280&height=1024&model=flux&nologo=true&private=true&enhance=false&seed={seed}"
+    for tentativa in range(3):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'drhenriquefigueiredo-capas/1.0'})
+            dados = urllib.request.urlopen(req, timeout=180).read()
+            img = Image.open(io.BytesIO(dados)).convert('RGB')
+            if img.size[0] < 600:
+                raise ValueError(f'imagem pequena {img.size}')
+            img.resize((1280, 1024)).save(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"), quality=92)
+            print(f"imagem {p['slug']}: FLUX (pollinations) seed {seed}")
+            return True
+        except Exception as e:
+            print(f"pollinations falhou para {p['slug']} (tentativa {tentativa + 1}): {e}")
+            time.sleep(20)
+    return False
 
 
 def formato(p):
@@ -92,7 +118,7 @@ def conferir_mudancas(pedidos):
         if formato(p) != 'post':
             texto += '|' + json.dumps({k: p.get(k) for k in ('formato', 'slides', 'final', 'texto', 'rotulo', 'rodape')},
                                       ensure_ascii=False, sort_keys=True)
-        atual = {'prompt': _h(p.get('prompt') or ''), 'capa': _h(texto)}
+        atual = {'prompt': _h((p.get('prompt') or '') + '|' + str(p.get('seed', ''))), 'capa': _h(texto)}
         antes = json.load(open(m)) if os.path.exists(m) else None
         if antes and antes.get('prompt') != atual['prompt']:
             if os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg")): os.remove(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))
@@ -111,7 +137,9 @@ def main():
     conferir_mudancas(pedidos)
     gerar = [p for p in pedidos if p.get('prompt') and not os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))]
     if gerar and os.environ.get('CF_ACCOUNT_ID') and os.environ.get('CF_API_TOKEN'):
-        gerar = [p for p in gerar if not cloudflare(p)]  # o que falhar cai no modelo local
+        gerar = [p for p in gerar if not cloudflare(p)]
+    if gerar:
+        gerar = [p for p in gerar if not pollinations(p)]  # o que falhar cai no modelo local (qualidade menor)
     if gerar:
         import torch
         from diffusers import DiffusionPipeline
