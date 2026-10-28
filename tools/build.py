@@ -284,6 +284,7 @@ def refazer_llms(todos):
         t = re.sub(r'## Artigos do blog\n.*?(?=\n## |\Z)', bloco, t, flags=re.S)
     else:
         t = t.replace('## Contato e perfis oficiais', bloco + '\n## Contato e perfis oficiais', 1)
+    t = re.sub(r'## Artigos para pacientes\n+(?=## )', '', t)  # título antigo que ficava vazio
     t = re.sub(r'\n{3,}', '\n\n', t)
     return gravar(p, t)
 
