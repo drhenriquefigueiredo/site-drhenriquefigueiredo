@@ -1,0 +1,29 @@
+name: Story do dia no Instagram
+on:
+  schedule:
+    - cron: "20 11 * * *"   # 08:20 em Brasília, depois do post do feed (Make, 08:00)
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: stories
+jobs:
+  story:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Publicar story aprovado de hoje
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: python3 tools/stories.py
+      - name: Registrar o que foi publicado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A content/redes/stories_publicados.json 2>/dev/null || true
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Stories publicados [skip netlify]"
+          git pull --rebase -q origin main
+          git push

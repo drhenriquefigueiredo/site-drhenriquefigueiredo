@@ -9,7 +9,7 @@ Por dia: no máximo 1 publicação no feed (artigo, post ou carrossel; o artigo 
   - itens aprovados de content/redes/fila/*.json com data <= hoje:
       {"date", "id", "tipo": "post" | "carrossel" | "story", "title", "topic", "caption"}
       post -> content/capas/ig-<id>.jpg · carrossel -> content/capas/car-<id>-NN.jpg · story -> content/capas/story-<id>.jpg
-Cada item leva <category> com o tipo e um <enclosure> por imagem (o carrossel tem várias).
+Cada item leva <category> (foto | carrossel | story) e o carrossel tem sempre 7 imagens (capa + 5 + final), e um <enclosure> por imagem (o carrossel tem várias).
 Um item só entra quando as artes existem (geradas pelo workflow "Gerar capas com IA").
 """
 import datetime as dt, glob, json, os, sys
@@ -21,6 +21,8 @@ RAIZ = os.path.dirname(AQUI)
 CONTENT = os.path.join(RAIZ, 'content')
 RAW = 'https://raw.githubusercontent.com/drhenriquefigueiredo/site-drhenriquefigueiredo/main/'
 DOM = 'https://drhenriquefigueiredo.com.br'
+# rótulo lido pelo filtro do Make: rota 1 = foto (post simples ou arte de artigo), rota 2 = carrossel (exatamente 7 imagens)
+CATEGORIA = {'post': 'foto', 'carrossel': 'carrossel', 'story': 'story'}
 
 
 def imagens(q):
@@ -54,9 +56,9 @@ def itens(hoje):
         if dia in alvo:
             continue
         imgs = imagens(q)
-        if imgs and all(os.path.exists(os.path.join(RAIZ, x)) for x in imgs) and (tipo != 'carrossel' or len(imgs) >= 2):
+        if imgs and all(os.path.exists(os.path.join(RAIZ, x)) for x in imgs) and (tipo != 'carrossel' or len(imgs) == 7):
             alvo[dia] = {'guid': f"{tipo}-{q['id']}", 'date': dia, 'tipo': tipo, 'title': q.get('title', ''),
-                         'link': f"{DOM}/", 'caption': q.get('caption', ''), 'imgs': imgs[:10]}
+                         'link': f"{DOM}/", 'caption': q.get('caption', ''), 'imgs': imgs}
     todos = list(feed.values()) + list(stories.values())
     todos.sort(key=lambda x: (x['date'], x['tipo'] != 'story'), reverse=True)
     return todos[:30]
@@ -72,7 +74,7 @@ def item_xml(x):
     <link>{x["link"]}</link>
     <guid isPermaLink="false">{x["guid"]}</guid>
     <pubDate>{data}</pubDate>
-    <category>{x["tipo"]}</category>
+    <category>{CATEGORIA[x["tipo"]]}</category>
     <description>{e(x["caption"])}</description>{anexos}
   </item>'''
 

@@ -6,7 +6,7 @@ Uso (normalmente chamado por tools/ia_imagem.py a partir de content/capas/pedido
 
 Pedido de carrossel:
   {"slug": id, "formato": "carrossel", "topic": "mao", "title": "Título da capa",
-   "slides": [{"titulo": "...", "texto": "..."}, ...],          # 3 a 7 slides de conteúdo
+   "slides": [{"titulo": "...", "texto": "..."}, ...],          # exatamente 5 slides de conteúdo (carrossel = capa + 5 + final = 7 imagens; o Make lê 7)
    "final": {"titulo": "Salve para lembrar", "texto": "..."}}   # opcional
   -> DIR/car-<id>-01.jpg (capa) ... DIR/car-<id>-NN.jpg (final)
 
@@ -178,7 +178,7 @@ def slide_final(p, total, saida):
 
 
 def carrossel(p, ia, saida):
-    slides = p['slides'][:8]
+    slides = p['slides'][:5]
     total = len(slides) + 2
     feitos = [slide_capa(p, ia, total, saida)]
     for i, s in enumerate(slides, start=1):

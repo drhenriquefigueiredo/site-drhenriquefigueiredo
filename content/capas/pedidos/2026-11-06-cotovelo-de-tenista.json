@@ -1,0 +1,33 @@
+{
+ "slug": "2026-11-06-cotovelo-de-tenista",
+ "formato": "carrossel",
+ "topic": "esporte",
+ "title": "Cotovelo de tenista: 5 fatos que ajudam na recuperação",
+ "prompt": "A person holding a tennis racket resting on a bench beside a clay court, elbow in focus, soft afternoon light, calm, navy blue and gold color palette, editorial photography, no faces, no text, no logos",
+ "slides": [
+  {
+   "titulo": "Não é só de quem joga tênis",
+   "texto": "A maioria dos casos aparece em quem repete esforço de pegada e de punho no trabalho, em casa ou na academia."
+  },
+  {
+   "titulo": "É uma tendinopatia",
+   "texto": "O problema está no tendão dos músculos extensores, na parte de fora do cotovelo. Há mais desgaste do tendão do que inflamação."
+  },
+  {
+   "titulo": "Em geral melhora sem cirurgia",
+   "texto": "A maior parte das pessoas melhora ao longo de meses com tratamento conservador bem conduzido. Cirurgia fica para casos selecionados."
+  },
+  {
+   "titulo": "Exercício é a base",
+   "texto": "Fortalecimento progressivo do antebraço, orientado e dosado, é um dos pilares com melhor evidência."
+  },
+  {
+   "titulo": "Infiltração com corticoide: cautela",
+   "texto": "Pode aliviar no curto prazo, mas estudos mostram mais recaídas no médio prazo. A decisão deve ser individualizada."
+  }
+ ],
+ "final": {
+  "titulo": "Salve e compartilhe",
+  "texto": "Envie para quem precisa ler isto. Para agendar uma avaliação, o link está no perfil."
+ }
+}

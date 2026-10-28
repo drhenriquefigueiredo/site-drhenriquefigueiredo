@@ -53,7 +53,7 @@ def arquivos(p):
     """Arquivos finais esperados de cada pedido (para saber se falta montar)."""
     f, sl = formato(p), p['slug']
     if f == 'carrossel':
-        return [f"car-{sl}-{k:02d}.jpg" for k in range(1, len(p.get('slides', [])[:8]) + 3)]
+        return [f"car-{sl}-{k:02d}.jpg" for k in range(1, len(p.get('slides', [])[:5]) + 3)]
     if f == 'story':
         return [f"story-{sl}.jpg"]
     return [f"blog-{sl}.jpg", f"blog-{sl}.webp", f"ig-{sl}.jpg"]
@@ -61,6 +61,9 @@ def arquivos(p):
 
 def montar(p):
     ia = os.path.join(CAPAS, f"ia-{p['slug']}.jpg")
+    if formato(p) == 'carrossel' and len(p.get('slides', [])) != 5:
+        print(f"AVISO {p['slug']}: o carrossel precisa de exatamente 5 slides de conteúdo (tem {len(p.get('slides', []))}); "
+              "com outro número ele não entra no feed do Instagram.")
     if formato(p) in ('carrossel', 'story'):
         import tempfile
         with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False, encoding='utf-8') as t:
