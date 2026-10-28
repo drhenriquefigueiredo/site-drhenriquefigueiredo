@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Teste do Make (não publicar)</title>
+  <link>https://drhenriquefigueiredo.com.br/</link>
+  <description>Feed de teste para configurar o roteador do Make. Nunca é usado para publicar.</description>
+  <item>
+    <title>Teste carrossel</title>
+    <link>https://drhenriquefigueiredo.com.br/</link>
+    <guid isPermaLink="false">teste-carrossel</guid>
+    <pubDate>Wed, 28 Oct 2026 06:00:00 -0300</pubDate>
+    <category>carrossel</category>
+    <description>Legenda de teste do carrossel</description>
+    <enclosure url="https://raw.githubusercontent.com/drhenriquefigueiredo/site-drhenriquefigueiredo/main/content/redes/teste/car-car-teste-01.jpg" type="image/jpeg" length="1"/>
+    <enclosure url="https://raw.githubusercontent.com/drhenriquefigueiredo/site-drhenriquefigueiredo/main/content/redes/teste/car-car-teste-02.jpg" type="image/jpeg" length="1"/>
+    <enclosure url="https://raw.githubusercontent.com/drhenriquefigueiredo/site-drhenriquefigueiredo/main/content/redes/teste/car-car-teste-03.jpg" type="image/jpeg" length="1"/>
+  </item>
+  <item>
+    <title>Teste story</title>
+    <link>https://drhenriquefigueiredo.com.br/</link>
+    <guid isPermaLink="false">teste-story</guid>
+    <pubDate>Wed, 28 Oct 2026 06:00:00 -0300</pubDate>
+    <category>story</category>
+    <description></description>
+    <enclosure url="https://raw.githubusercontent.com/drhenriquefigueiredo/site-drhenriquefigueiredo/main/content/redes/teste/story-story-teste.jpg" type="image/jpeg" length="1"/>
+  </item>
+</channel>
+</rss>

@@ -7,7 +7,7 @@ Gera:
   DIR/blog-<slug>.webp  1200x600
   DIR/ig-<slug>.jpg     1080x1350 (Instagram, 4:5)
 """
-import argparse, hashlib, os, textwrap
+import argparse, hashlib, os, textwrap, unicodedata
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
@@ -50,7 +50,7 @@ def cobrir(im, w, h, foco_y=0.3):
 
 
 def quebrar(draw, texto, fonte, largura):
-    palavras, linhas, atual = texto.split(), [], ''
+    palavras, linhas, atual = unicodedata.normalize('NFC', texto).split(), [], ''
     for p in palavras:
         teste = (atual + ' ' + p).strip()
         if draw.textlength(teste, font=fonte) <= largura:
@@ -64,7 +64,7 @@ def quebrar(draw, texto, fonte, largura):
 
 def titulo_ajustado(draw, texto, largura, max_linhas, tamanhos):
     for t in tamanhos:
-        f = F('Cormorant-SemiBold.ttf', t)
+        f = F('EBGaramond-SemiBold.ttf', t)
         ls = quebrar(draw, texto, f, largura)
         if len(ls) <= max_linhas:
             return f, ls
@@ -103,7 +103,7 @@ def capa_larga(slug, titulo, tema, saida):
     ft = F('Manrope-Bold.ttf', 20)
     d.text((x, 92), tema.upper(), font=ft, fill=GOLD, spacing=4)
     d.line([x, 128, x + 56, 128], fill=GOLD, width=2)
-    f, linhas = titulo_ajustado(d, titulo, 640, 4, [64, 58, 52, 46, 42])
+    f, linhas = titulo_ajustado(d, titulo, 640, 4, [58, 53, 48, 43, 40])
     y = 156
     for l in linhas:
         d.text((x, y), l, font=f, fill=WHITE)
@@ -133,7 +133,7 @@ def capa_instagram(slug, titulo, tema, saida):
     ft = F('Manrope-Bold.ttf', 26)
     d.text((x, 720), tema.upper(), font=ft, fill=GOLD)
     d.line([x, 764, x + 70, 764], fill=GOLD, width=3)
-    f, linhas = titulo_ajustado(d, titulo, W - 2 * x, 5, [84, 76, 68, 62, 56])
+    f, linhas = titulo_ajustado(d, titulo, W - 2 * x, 5, [76, 70, 64, 58, 52])
     y = 796
     for l in linhas:
         d.text((x, y), l, font=f, fill=WHITE)

@@ -17,7 +17,7 @@ ROTULO = {'mao': 'Mão e punho', 'ortopedia': 'Ortopedia', 'dor': 'Dor', 'regene
 ESTILO = ('editorial medical illustration, soft realistic 3d render, calm navy blue and warm gold palette, '
           'clean minimal background, soft studio lighting, high detail, professional healthcare magazine style')
 SEM = 'no text, no letters, no faces, no blood'
-LAYOUT = '2'  # mude para refazer todas as capas quando o desenho (tools/capa.py) mudar
+LAYOUT = '3'  # mude para refazer todas as capas quando o desenho (tools/capa.py) mudar
 NEGATIVO = ('text, letters, words, watermark, logo, signature, face, portrait, blood, wound, surgery, gore, '
             'deformed hands, extra fingers, nsfw, low quality, blurry')
 
@@ -45,8 +45,32 @@ def cloudflare(p):
     return True
 
 
+def formato(p):
+    return p.get('formato', 'post')  # post (capa do artigo ou post simples), carrossel, story
+
+
+def arquivos(p):
+    """Arquivos finais esperados de cada pedido (para saber se falta montar)."""
+    f, sl = formato(p), p['slug']
+    if f == 'carrossel':
+        return [f"car-{sl}-{k:02d}.jpg" for k in range(1, len(p.get('slides', [])[:8]) + 3)]
+    if f == 'story':
+        return [f"story-{sl}.jpg"]
+    return [f"blog-{sl}.jpg", f"blog-{sl}.webp", f"ig-{sl}.jpg"]
+
+
 def montar(p):
     ia = os.path.join(CAPAS, f"ia-{p['slug']}.jpg")
+    if formato(p) in ('carrossel', 'story'):
+        import tempfile
+        with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False, encoding='utf-8') as t:
+            json.dump(p, t, ensure_ascii=False)
+        cmd = [sys.executable, os.path.join(AQUI, 'arte.py'), '--pedido', t.name, '--saida', CAPAS]
+        if os.path.exists(ia):
+            cmd += ['--imagem', ia]
+        subprocess.run(cmd, check=True)
+        os.remove(t.name)
+        return
     subprocess.run([sys.executable, os.path.join(AQUI, 'capa.py'), '--slug', p['slug'], '--titulo', p['title'],
                     '--tema', ROTULO[p['topic']], '--saida', CAPAS, '--imagem', ia], check=True)
 
@@ -56,28 +80,33 @@ def _h(txt):
 
 
 def conferir_mudancas(pedidos):
-    """content/capas/meta/<slug>.json guarda o prompt e o título usados. Se o pedido mudar,
-    apaga o que precisa ser refeito: prompt novo = imagem nova; título/tema novo = capas novas."""
+    """content/capas/meta/<slug>.json guarda o prompt e o conteúdo usados. Se o pedido mudar,
+    apaga o que precisa ser refeito: prompt novo = imagem nova; texto/título/tema novo = artes novas."""
     os.makedirs(os.path.join(CAPAS, 'meta'), exist_ok=True)
     for p in pedidos:
         m = os.path.join(CAPAS, 'meta', f"{p['slug']}.json")
-        atual = {'prompt': _h(p['prompt']), 'capa': _h(p['title'] + '|' + p['topic'] + '|' + LAYOUT)}
+        texto = p['title'] + '|' + p.get('topic', '') + '|' + LAYOUT
+        if formato(p) != 'post':
+            texto += '|' + json.dumps({k: p.get(k) for k in ('formato', 'slides', 'final', 'texto', 'rotulo', 'rodape')},
+                                      ensure_ascii=False, sort_keys=True)
+        atual = {'prompt': _h(p.get('prompt') or ''), 'capa': _h(texto)}
         antes = json.load(open(m)) if os.path.exists(m) else None
         if antes and antes.get('prompt') != atual['prompt']:
-            for n in (f"ia-{p['slug']}.jpg",):
-                if os.path.exists(os.path.join(CAPAS, n)): os.remove(os.path.join(CAPAS, n))
+            if os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg")): os.remove(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))
         if antes and (antes != atual):
-            for n in (f"blog-{p['slug']}.jpg", f"blog-{p['slug']}.webp", f"ig-{p['slug']}.jpg"):
-                if os.path.exists(os.path.join(CAPAS, n)): os.remove(os.path.join(CAPAS, n))
+            for n in glob.glob(os.path.join(CAPAS, f"car-{p['slug']}-*.jpg")) + [os.path.join(CAPAS, n) for n in
+                     (f"blog-{p['slug']}.jpg", f"blog-{p['slug']}.webp", f"ig-{p['slug']}.jpg", f"story-{p['slug']}.jpg")]:
+                if os.path.exists(n): os.remove(n)
         json.dump(atual, open(m, 'w'))
 
 
 def main():
-    """Gera a imagem de IA quando falta; monta as capas quando faltam. Para trocar a imagem ou o
-    título basta atualizar o pedido (content/capas/pedidos/<slug>.json): o resto é refeito sozinho."""
+    """Gera a imagem de IA quando falta; monta as artes quando faltam. Para trocar a imagem ou o
+    texto basta atualizar o pedido (content/capas/pedidos/<slug>.json): o resto é refeito sozinho.
+    Formatos: post (padrão: capa do blog + arte do Instagram), carrossel (tools/arte.py) e story."""
     pedidos = [json.load(open(f, encoding='utf-8')) for f in sorted(glob.glob(os.path.join(CAPAS, 'pedidos', '*.json')))]
     conferir_mudancas(pedidos)
-    gerar = [p for p in pedidos if not os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))]
+    gerar = [p for p in pedidos if p.get('prompt') and not os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))]
     if gerar and os.environ.get('CF_ACCOUNT_ID') and os.environ.get('CF_API_TOKEN'):
         gerar = [p for p in gerar if not cloudflare(p)]  # o que falhar cai no modelo local
     if gerar:
@@ -96,9 +125,9 @@ def main():
             img.resize((1280, 1024)).save(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"), quality=90)
             print(f"imagem {p['slug']}: {time.time() - t0:.0f}s")
     for p in pedidos:
-        if not all(os.path.exists(os.path.join(CAPAS, n)) for n in (f"blog-{p['slug']}.jpg", f"ig-{p['slug']}.jpg")):
+        if not all(os.path.exists(os.path.join(CAPAS, n)) for n in arquivos(p)):
             montar(p)
-            print(f"capas {p['slug']}")
+            print(f"artes {p['slug']} ({formato(p)})")
 
 
 if __name__ == '__main__':

@@ -4,11 +4,13 @@
 Gera content/redes/feed.xml, lido pelo Make todo dia às 8h. Fica FORA de site/ e é servido pelo
 GitHub (raw.githubusercontent.com), então publicar nas redes não gasta créditos da Netlify.
 
-Itens (no máximo 1 por dia; o artigo do dia tem prioridade):
-  - artigos aprovados de content/posts/ com data <= hoje  -> legenda = campo "instagram", arte = content/capas/ig-<slug>.jpg
-  - posts aprovados de content/redes/fila/*.json com data <= hoje:
-      {"date", "id", "tipo": "post", "title", "topic", "caption"}  -> arte = content/capas/ig-<id>.jpg
-Um item só entra quando a arte existe (gerada pelo workflow "Gerar capas com IA").
+Por dia: no máximo 1 publicação no feed (artigo, post ou carrossel; o artigo tem prioridade) e 1 story.
+  - artigos aprovados de content/posts/ com data <= hoje -> legenda "instagram", arte content/capas/ig-<slug>.jpg
+  - itens aprovados de content/redes/fila/*.json com data <= hoje:
+      {"date", "id", "tipo": "post" | "carrossel" | "story", "title", "topic", "caption"}
+      post -> content/capas/ig-<id>.jpg · carrossel -> content/capas/car-<id>-NN.jpg · story -> content/capas/story-<id>.jpg
+Cada item leva <category> com o tipo e um <enclosure> por imagem (o carrossel tem várias).
+Um item só entra quando as artes existem (geradas pelo workflow "Gerar capas com IA").
 """
 import datetime as dt, glob, json, os, sys
 from xml.sax.saxutils import escape as e
@@ -21,48 +23,70 @@ RAW = 'https://raw.githubusercontent.com/drhenriquefigueiredo/site-drhenriquefig
 DOM = 'https://drhenriquefigueiredo.com.br'
 
 
+def imagens(q):
+    """Arquivos (relativos à raiz) de um item da fila, em ordem."""
+    t, i = q.get('tipo', 'post'), q['id']
+    if t == 'carrossel':
+        return sorted(os.path.relpath(f, RAIZ) for f in glob.glob(os.path.join(CONTENT, 'capas', f'car-{i}-*.jpg')))
+    if t == 'story':
+        return [f'content/capas/story-{i}.jpg']
+    return [f'content/capas/ig-{i}.jpg']
+
+
 def itens(hoje):
-    por_dia = {}
+    feed, stories = {}, {}
     for f in sorted(glob.glob(os.path.join(CONTENT, 'posts', '*.json'))):
         p = json.load(open(f, encoding='utf-8'))
         if p.get('status') == 'aprovado' and p['date'] <= hoje and p.get('instagram'):
             img = f"content/capas/ig-{p['slug']}.jpg"
             if os.path.exists(os.path.join(RAIZ, img)):
-                por_dia[p['date']] = {'guid': f"redes-{p['slug']}", 'date': p['date'], 'title': p['title'],
-                                      'link': f"{DOM}/blog/{p['slug']}/", 'caption': p['instagram'], 'img': img}
+                feed[p['date']] = {'guid': f"redes-{p['slug']}", 'date': p['date'], 'tipo': 'post', 'title': p['title'],
+                                   'link': f"{DOM}/blog/{p['slug']}/", 'caption': p['instagram'], 'imgs': [img]}
     for f in sorted(glob.glob(os.path.join(CONTENT, 'redes', 'fila', '*.json'))):
         q = json.load(open(f, encoding='utf-8'))
-        if q.get('date', '9999') > hoje or not q.get('caption'):
+        tipo = q.get('tipo', 'post')
+        if q.get('date', '9999') > hoje or (tipo != 'story' and not q.get('caption')):
             continue
+        alvo = stories if tipo == 'story' else feed
         dia = q['date']
-        while dia in por_dia and dia < hoje:  # dia ocupado por artigo: vai para o próximo dia livre
+        while dia in alvo and dia < hoje:  # dia ocupado: vai para o próximo dia livre
             dia = (dt.date.fromisoformat(dia) + dt.timedelta(days=1)).isoformat()
-        if dia in por_dia:
+        if dia in alvo:
             continue
-        img = f"content/capas/ig-{q['id']}.jpg"
-        if os.path.exists(os.path.join(RAIZ, img)):
-            por_dia[dia] = {'guid': f"post-{q['id']}", 'date': dia, 'title': q.get('title', ''),
-                                  'link': f"{DOM}/blog/", 'caption': q['caption'], 'img': img}
-    return [por_dia[d] for d in sorted(por_dia, reverse=True)][:20]
+        imgs = imagens(q)
+        if imgs and all(os.path.exists(os.path.join(RAIZ, x)) for x in imgs) and (tipo != 'carrossel' or len(imgs) >= 2):
+            alvo[dia] = {'guid': f"{tipo}-{q['id']}", 'date': dia, 'tipo': tipo, 'title': q.get('title', ''),
+                         'link': f"{DOM}/", 'caption': q.get('caption', ''), 'imgs': imgs[:10]}
+    todos = list(feed.values()) + list(stories.values())
+    todos.sort(key=lambda x: (x['date'], x['tipo'] != 'story'), reverse=True)
+    return todos[:30]
 
 
-def main():
-    hoje = sys.argv[1] if len(sys.argv) > 1 else dt.datetime.now(ZoneInfo('America/Sao_Paulo')).date().isoformat()
-    corpo = ''.join(f'''
+def item_xml(x):
+    anexos = ''.join(f'\n    <enclosure url="{RAW}{img}" type="image/jpeg" length="{os.path.getsize(os.path.join(RAIZ, img))}"/>'
+                     for img in x['imgs'])
+    data = dt.datetime.fromisoformat(x['date'] + 'T06:00:00-03:00').strftime('%a, %d %b %Y %H:%M:%S -0300')
+    return f'''
   <item>
     <title>{e(x["title"])}</title>
     <link>{x["link"]}</link>
     <guid isPermaLink="false">{x["guid"]}</guid>
-    <pubDate>{dt.datetime.fromisoformat(x["date"] + "T06:00:00-03:00").strftime("%a, %d %b %Y %H:%M:%S -0300")}</pubDate>
-    <description>{e(x["caption"])}</description>
-    <enclosure url="{RAW}{x["img"]}" type="image/jpeg" length="{os.path.getsize(os.path.join(RAIZ, x["img"]))}"/>
-  </item>''' for x in itens(hoje))
+    <pubDate>{data}</pubDate>
+    <category>{x["tipo"]}</category>
+    <description>{e(x["caption"])}</description>{anexos}
+  </item>'''
+
+
+def main():
+    hoje = sys.argv[1] if len(sys.argv) > 1 else dt.datetime.now(ZoneInfo('America/Sao_Paulo')).date().isoformat()
+    lista = itens(hoje)
+    corpo = ''.join(item_xml(x) for x in lista)
     feed = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
   <title>Redes: Dr. Henrique Figueiredo</title>
   <link>{DOM}/</link>
-  <description>Legendas e artes aprovadas para o Instagram (1 por dia).</description>
+  <description>Publicações aprovadas para o Instagram: até 1 no feed (post ou carrossel) e 1 story por dia.</description>
   <language>pt-BR</language>{corpo}
 </channel>
 </rss>
@@ -72,7 +96,7 @@ def main():
     antes = open(destino, encoding='utf-8').read() if os.path.exists(destino) else None
     if antes != feed:
         open(destino, 'w', encoding='utf-8').write(feed)
-    print(json.dumps({'feed_mudou': antes != feed, 'itens': corpo.count('<item>')}))
+    print(json.dumps({'feed_mudou': antes != feed, 'itens': len(lista)}))
 
 
 if __name__ == '__main__':
