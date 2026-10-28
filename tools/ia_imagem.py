@@ -17,6 +17,7 @@ ROTULO = {'mao': 'Mão e punho', 'ortopedia': 'Ortopedia', 'dor': 'Dor', 'regene
 ESTILO = ('editorial medical illustration, soft realistic 3d render, calm navy blue and warm gold palette, '
           'clean minimal background, soft studio lighting, high detail, professional healthcare magazine style')
 SEM = 'no text, no letters, no faces, no blood'
+LAYOUT = '2'  # mude para refazer todas as capas quando o desenho (tools/capa.py) mudar
 NEGATIVO = ('text, letters, words, watermark, logo, signature, face, portrait, blood, wound, surgery, gore, '
             'deformed hands, extra fingers, nsfw, low quality, blurry')
 
@@ -60,7 +61,7 @@ def conferir_mudancas(pedidos):
     os.makedirs(os.path.join(CAPAS, 'meta'), exist_ok=True)
     for p in pedidos:
         m = os.path.join(CAPAS, 'meta', f"{p['slug']}.json")
-        atual = {'prompt': _h(p['prompt']), 'capa': _h(p['title'] + '|' + p['topic'])}
+        atual = {'prompt': _h(p['prompt']), 'capa': _h(p['title'] + '|' + p['topic'] + '|' + LAYOUT)}
         antes = json.load(open(m)) if os.path.exists(m) else None
         if antes and antes.get('prompt') != atual['prompt']:
             for n in (f"ia-{p['slug']}.jpg",):

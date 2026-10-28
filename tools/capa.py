@@ -141,7 +141,7 @@ def capa_instagram(slug, titulo, tema, saida):
     lg = logo(230)
     base.paste(lg, (x, H - 84 - lg.height), lg)
     fr = F('Manrope-Medium.ttf', 20)
-    d.text((x + 250, H - 84 - lg.height // 2 - 12), 'Médico ortopedista · CRM-SP 199.832', font=fr, fill=GOLD_SOFT)
+    d.text((x + 250, H - 84 - lg.height // 2 - 12), 'Médico ortopedista · CRM-SP 199.832 · RQE 102783 / 124871', font=fr, fill=GOLD_SOFT)
     base.save(os.path.join(saida, f'ig-{slug}.jpg'), quality=88, optimize=True, progressive=True)
 
 
