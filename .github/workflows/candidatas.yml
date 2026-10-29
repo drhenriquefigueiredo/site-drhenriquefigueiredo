@@ -17,6 +17,8 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install --quiet pillow
       - run: python3 tools/candidatas.py
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         timeout-minutes: 40
         continue-on-error: true
       - name: Gravar opções

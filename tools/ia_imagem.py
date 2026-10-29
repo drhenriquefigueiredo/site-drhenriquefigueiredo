@@ -47,6 +47,36 @@ def cloudflare(p):
     return True
 
 
+def pexels(p):
+    """Foto real do banco gratuito Pexels (licença de uso comercial livre). Precisa do segredo PEXELS_API_KEY.
+    No pedido: "pexels_id" (foto escolhida) ou "busca" (termos em inglês; usa o 1º resultado)."""
+    import io, urllib.parse, urllib.request
+    from PIL import Image, ImageOps
+    chave = os.environ.get('PEXELS_API_KEY')
+    if not chave or not (p.get('pexels_id') or p.get('busca')):
+        return False
+    h = {'Authorization': chave, 'User-Agent': 'drhenriquefigueiredo-capas/1.0'}
+    try:
+        if p.get('pexels_id'):
+            foto = json.load(urllib.request.urlopen(urllib.request.Request(
+                f"https://api.pexels.com/v1/photos/{p['pexels_id']}", headers=h), timeout=60))
+        else:
+            q = urllib.parse.urlencode({'query': p['busca'], 'per_page': 1, 'orientation': 'landscape'})
+            foto = json.load(urllib.request.urlopen(urllib.request.Request(
+                f"https://api.pexels.com/v1/search?{q}", headers=h), timeout=60))['photos'][0]
+        dados = urllib.request.urlopen(urllib.request.Request(foto['src']['large2x'], headers=h), timeout=120).read()
+        img = ImageOps.fit(Image.open(io.BytesIO(dados)).convert('RGB'), (1280, 1024), Image.LANCZOS,
+                           centering=tuple(p.get('centro', (0.5, 0.5))))
+        img.save(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"), quality=92)
+        json.dump({'pexels_id': foto['id'], 'fotografo': foto.get('photographer'), 'url': foto.get('url')},
+                  open(os.path.join(CAPAS, 'meta', f"foto-{p['slug']}.json"), 'w'), ensure_ascii=False)
+        print(f"imagem {p['slug']}: foto Pexels {foto['id']} ({foto.get('photographer')})")
+        return True
+    except Exception as e:
+        print(f"Pexels falhou para {p['slug']}: {e}")
+        return False
+
+
 def pollinations(p):
     """FLUX (gratuito, sem conta) via image.pollinations.ai. Muito melhor em mãos e anatomia que o modelo local.
     O campo opcional "seed" do pedido troca a variação (use quando a imagem sair com defeito)."""
@@ -120,7 +150,7 @@ def conferir_mudancas(pedidos):
         if formato(p) != 'post':
             texto += '|' + json.dumps({k: p.get(k) for k in ('formato', 'slides', 'final', 'texto', 'rotulo', 'rodape')},
                                       ensure_ascii=False, sort_keys=True)
-        atual = {'prompt': _h((p.get('prompt') or '') + '|' + str(p.get('seed', ''))), 'capa': _h(texto)}
+        atual = {'prompt': _h((p.get('prompt') or '') + '|' + str(p.get('seed', '')) + '|' + str(p.get('pexels_id', '')) + '|' + str(p.get('busca', ''))), 'capa': _h(texto)}
         antes = json.load(open(m)) if os.path.exists(m) else None
         if antes and antes.get('prompt') != atual['prompt']:
             if os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg")): os.remove(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))
@@ -137,11 +167,14 @@ def main():
     Formatos: post (padrão: capa do blog + arte do Instagram), carrossel (tools/arte.py) e story."""
     pedidos = [json.load(open(f, encoding='utf-8')) for f in sorted(glob.glob(os.path.join(CAPAS, 'pedidos', '*.json')))]
     conferir_mudancas(pedidos)
-    gerar = [p for p in pedidos if p.get('prompt') and not os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))]
+    gerar = [p for p in pedidos if (p.get('prompt') or p.get('pexels_id') or p.get('busca'))
+             and not os.path.exists(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"))]
+    gerar = [p for p in gerar if not pexels(p)]  # foto real primeiro (quando o pedido tem pexels_id ou busca)
+    gerar = [p for p in gerar if p.get('prompt')]
     if gerar and os.environ.get('CF_ACCOUNT_ID') and os.environ.get('CF_API_TOKEN'):
         gerar = [p for p in gerar if not cloudflare(p)]
-    if gerar:
-        gerar = [p for p in gerar if not pollinations(p)]  # o que falhar cai no modelo local (qualidade menor)
+    if gerar and os.environ.get('USAR_POLLINATIONS'):
+        gerar = [p for p in gerar if not pollinations(p)]
     if gerar:
         import torch
         from diffusers import DiffusionPipeline
