@@ -48,29 +48,30 @@ def cloudflare(p):
 
 
 def pexels(p):
-    """Foto real do banco gratuito Pexels (licença de uso comercial livre). Precisa do segredo PEXELS_API_KEY.
-    No pedido: "pexels_id" (foto escolhida) ou "busca" (termos em inglês; usa o 1º resultado)."""
+    """Foto real do banco gratuito Pexels (licença Pexels: uso comercial livre, sem atribuição obrigatória).
+    No pedido: "pexels_id" (foto escolhida; baixa direto do CDN, sem chave) ou "busca" (precisa do segredo
+    PEXELS_API_KEY; usa o 1º resultado). "centro": [x, y] de 0 a 1 ajusta o recorte."""
     import io, urllib.parse, urllib.request
     from PIL import Image, ImageOps
     chave = os.environ.get('PEXELS_API_KEY')
-    if not chave or not (p.get('pexels_id') or p.get('busca')):
-        return False
-    h = {'Authorization': chave, 'User-Agent': 'drhenriquefigueiredo-capas/1.0'}
+    h = {'User-Agent': 'Mozilla/5.0 (drhenriquefigueiredo-capas)'}
+    pid = p.get('pexels_id')
     try:
-        if p.get('pexels_id'):
-            foto = json.load(urllib.request.urlopen(urllib.request.Request(
-                f"https://api.pexels.com/v1/photos/{p['pexels_id']}", headers=h), timeout=60))
-        else:
+        if not pid and p.get('busca') and chave:
             q = urllib.parse.urlencode({'query': p['busca'], 'per_page': 1, 'orientation': 'landscape'})
-            foto = json.load(urllib.request.urlopen(urllib.request.Request(
-                f"https://api.pexels.com/v1/search?{q}", headers=h), timeout=60))['photos'][0]
-        dados = urllib.request.urlopen(urllib.request.Request(foto['src']['large2x'], headers=h), timeout=120).read()
+            pid = json.load(urllib.request.urlopen(urllib.request.Request(
+                f"https://api.pexels.com/v1/search?{q}", headers=dict(h, Authorization=chave)), timeout=60))['photos'][0]['id']
+        if not pid:
+            return False
+        url = f"https://images.pexels.com/photos/{pid}/pexels-photo-{pid}.jpeg?auto=compress&cs=tinysrgb&w=1920"
+        dados = urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=120).read()
         img = ImageOps.fit(Image.open(io.BytesIO(dados)).convert('RGB'), (1280, 1024), Image.LANCZOS,
                            centering=tuple(p.get('centro', (0.5, 0.5))))
         img.save(os.path.join(CAPAS, f"ia-{p['slug']}.jpg"), quality=92)
-        json.dump({'pexels_id': foto['id'], 'fotografo': foto.get('photographer'), 'url': foto.get('url')},
-                  open(os.path.join(CAPAS, 'meta', f"foto-{p['slug']}.json"), 'w'), ensure_ascii=False)
-        print(f"imagem {p['slug']}: foto Pexels {foto['id']} ({foto.get('photographer')})")
+        os.makedirs(os.path.join(CAPAS, 'meta'), exist_ok=True)
+        json.dump({'pexels_id': pid, 'url': f'https://www.pexels.com/photo/{pid}/'},
+                  open(os.path.join(CAPAS, 'meta', f"foto-{p['slug']}.json"), 'w'))
+        print(f"imagem {p['slug']}: foto Pexels {pid}")
         return True
     except Exception as e:
         print(f"Pexels falhou para {p['slug']}: {e}")
