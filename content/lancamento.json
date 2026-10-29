@@ -1,5 +1,5 @@
 {
- "iniciado": false,
- "explicacao": "Modo pré-lançamento: tudo está ligado e testado, mas nada novo é publicado no blog ou no Instagram até o Dr. Henrique decidir começar. Para iniciar, troque iniciado para true e preencha data_inicio (AAAA-MM-DD). As tarefas leem este arquivo todos os dias.",
- "data_inicio": null
+ "iniciado": true,
+ "explicacao": "Largada definida pelo Dr. Henrique: tudo começa em 13/11/2026 (blog, Instagram/Facebook, stories e Google). Antes dessa data as tarefas não publicam nada.",
+ "data_inicio": "2026-11-13"
 }
