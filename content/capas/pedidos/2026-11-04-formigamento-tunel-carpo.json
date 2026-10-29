@@ -3,7 +3,6 @@
  "formato": "carrossel",
  "topic": "mao",
  "title": "Mão formigando? 5 sinais de túnel do carpo",
- "prompt": "Close-up of a person's hand resting on a laptop keyboard at night, soft warm desk lamp light, calm mood, navy blue and gold color palette, editorial photography, no faces, no text, no logos",
  "slides": [
   {
    "titulo": "Formigamento em dedos específicos",
@@ -29,5 +28,6 @@
  "final": {
   "titulo": "Salve e compartilhe",
   "texto": "Envie para quem precisa ler isto. Para agendar uma avaliação, o link está no perfil."
- }
+ },
+ "pexels_id": 7298854
 }

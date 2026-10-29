@@ -3,7 +3,6 @@
  "formato": "carrossel",
  "topic": "esporte",
  "title": "Cotovelo de tenista: 5 fatos que ajudam na recuperação",
- "prompt": "A person holding a tennis racket resting on a bench beside a clay court, elbow in focus, soft afternoon light, calm, navy blue and gold color palette, editorial photography, no faces, no text, no logos",
  "slides": [
   {
    "titulo": "Não é só de quem joga tênis",
@@ -29,5 +28,6 @@
  "final": {
   "titulo": "Salve e compartilhe",
   "texto": "Envie para quem precisa ler isto. Para agendar uma avaliação, o link está no perfil."
- }
+ },
+ "pexels_id": 8224638
 }
