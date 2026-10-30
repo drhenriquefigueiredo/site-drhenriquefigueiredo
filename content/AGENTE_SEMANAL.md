@@ -58,7 +58,7 @@ CARROSSEL (sempre 7 artes: capa + EXATAMENTE 5 cards + fechamento; o Make lê 7 
 - Uma ideia por card, frases diretas, sem travessão longo, sem números sem fonte.
 - Documento em "conteudos": id, tipo "carrossel", date, semana, title, topic, caption, refs, status "rascunho", note "", imgs: [7 urls "/_blob/..."], img_ids: [7 ids] (passo 6), updated_at.
 
-### 4. Stories (1 por dia, de terça a domingo: 6 por semana; publicados sozinhos às 8h20)
+### 4. Stories (1 por dia, de terça a domingo: 6 por semana; depois de aprovados, a tarefa diária agenda no Metricool para as 8h20)
 Cada story chama para a publicação do feed daquele dia (ou para o artigo do dia). Formatos que alternam: "Novo post", "Você sabia?", "Mito ou verdade?", "Dica do dia", "Pergunta frequente", "Pausa rápida".
 - id = "<AAAA-MM-DD>-<palavra-chave>"; arte story-<id>.jpg (1080x1920).
 - Pedido: content/capas/pedidos/<id>.json = {"slug": id, "formato": "story", "topic", "rotulo" (até 20 caracteres), "title" (frase principal, até 70 caracteres), "texto" (até 70 caracteres, a chamada), "rodape": "@drhenriquefigueiredo"}. Sem "prompt" (arte só tipográfica, mais leve e legível).
