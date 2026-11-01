@@ -41,7 +41,7 @@ Escolha um TEMA CENTRAL ligado aos artigos já publicados ou aprovados (para lev
 Formatos que mais geram salvamentos e compartilhamentos (use-os): "3 sinais de que…", "mito ou verdade", "o que fazer e o que evitar", "pergunta que recebo no consultório", "como funciona" (explicação simples de uma condição), "ergonomia/prevenção em 3 passos".
 
 ### 3. Feed do Instagram: tudo estático, nada depende de gravação (no máximo 1 publicação de feed por dia; nunca na segunda; dias com artigo já têm a arte do artigo)
-Plano por semana social (terça a domingo): 2 CARROSSÉIS + 2 a 3 POSTS (arte única), nos dias sem artigo. Carrossel é o formato que mais gera salvamento e alcance: use-o nos temas mais fortes.
+Plano por semana social (terça a domingo): 2 CARROSSÉIS + 2 a 3 POSTS (arte única), nos dias sem artigo. Carrossel é o formato que mais gera salvamento e alcance: use-o nos temas mais fortes. O PRIMEIRO carrossel da semana também sai no TikTok (tarefa "Redes extras", 19h): escreva a legenda pensando nos dois públicos e evite "link na bio" como única chamada (use também "drhenriquefigueiredo.com.br").
 Comum a post e carrossel:
 - title = frase-gancho curta (até 60 caracteres) que vai na arte; topic = mao | ortopedia | dor | regenerativa | esporte.
 - caption (legenda): 600–1.100 caracteres; 1ª linha = gancho forte; parágrafos curtos; conteúdo educativo útil; 1 chamada para ação variando entre "salve para lembrar", "compartilhe com quem precisa" e "leia o artigo completo (link na bio)"; 3–6 hashtags específicas; termine com:
@@ -58,7 +58,8 @@ CARROSSEL (sempre 7 artes: capa + EXATAMENTE 5 cards + fechamento; o Make lê 7 
 - Uma ideia por card, frases diretas, sem travessão longo, sem números sem fonte.
 - Documento em "conteudos": id, tipo "carrossel", date, semana, title, topic, caption, refs, status "rascunho", note "", imgs: [7 urls "/_blob/..."], img_ids: [7 ids] (passo 6), updated_at.
 
-### 4. Stories (1 por dia, de terça a domingo: 6 por semana; depois de aprovados, a tarefa diária agenda no Metricool para as 8h20)
+### 4. Stories (3 por semana: terça, quinta e sábado; depois de aprovados, a tarefa diária agenda no Metricool para as 8h20)
+O Metricool gratuito publica no máximo 20 itens por mês somando todas as redes (cada rede conta 1). A conta fica assim: 3 stories por semana (cerca de 13 por mês) + 1 carrossel por semana no TikTok (até 5 por mês) = até 18. Não crie mais de 3 stories por semana.
 Cada story chama para a publicação do feed daquele dia (ou para o artigo do dia). Formatos que alternam: "Novo post", "Você sabia?", "Mito ou verdade?", "Dica do dia", "Pergunta frequente", "Pausa rápida".
 - id = "<AAAA-MM-DD>-<palavra-chave>"; arte story-<id>.jpg (1080x1920).
 - Pedido: content/capas/pedidos/<id>.json = {"slug": id, "formato": "story", "topic", "rotulo" (até 20 caracteres), "title" (frase principal, até 70 caracteres), "texto" (até 70 caracteres, a chamada), "rodape": "@drhenriquefigueiredo"}. Sem "prompt" (arte só tipográfica, mais leve e legível).
