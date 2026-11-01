@@ -41,7 +41,11 @@ Escolha um TEMA CENTRAL ligado aos artigos já publicados ou aprovados (para lev
 Formatos que mais geram salvamentos e compartilhamentos (use-os): "3 sinais de que…", "mito ou verdade", "o que fazer e o que evitar", "pergunta que recebo no consultório", "como funciona" (explicação simples de uma condição), "ergonomia/prevenção em 3 passos".
 
 ### 3. Feed do Instagram: tudo estático, nada depende de gravação (no máximo 1 publicação de feed por dia; nunca na segunda; dias com artigo já têm a arte do artigo)
-Plano por semana social (terça a domingo): 2 CARROSSÉIS + 2 a 3 POSTS (arte única), nos dias sem artigo. Carrossel é o formato que mais gera salvamento e alcance: use-o nos temas mais fortes. O PRIMEIRO carrossel da semana também sai no TikTok (tarefa "Redes extras", 19h): escreva a legenda pensando nos dois públicos e evite "link na bio" como única chamada (use também "drhenriquefigueiredo.com.br").
+Plano por semana social (terça a domingo), no máximo 1 publicação de feed por dia, de 5 a 6 por semana:
+- CARROSSEL DO ARTIGO para cada artigo da semana (3 a 4): sai NO LUGAR da arte única do artigo. Dados de 2026 para contas de 1 a 5 mil seguidores: carrossel tem cerca de 2,4 vezes as visualizações da imagem única e 9 vezes mais salvamentos. id = "<data do artigo>-art-<palavra-chave>", date = data do artigo, campo extra "artigo": slug do artigo (no documento e no pedido). Capa = título do artigo; os 5 cards = os pontos principais do texto; final = {"titulo": "Leia o artigo completo", "texto": "O link está no perfil. Salve este post e envie para quem precisa."}. Legenda termina com "Leia o artigo completo no link da bio.".
+- 1 CARROSSEL educativo extra + 1 POST de arte única ("mito ou verdade", frase forte) nos dias sem artigo. Deixe pelo menos 1 dia da semana sem feed.
+- O PRIMEIRO carrossel da semana também sai no TikTok (tarefa "Redes extras", 19h): escreva a legenda pensando nos dois públicos e use também "drhenriquefigueiredo.com.br" além de "link na bio".
+- Engajamento (o Instagram valoriza envios e comentários): toda legenda termina com 1 pergunta simples que convide a comentar (ex.: "Você já sentiu isso ao acordar?") e 1 chamada para enviar ("Envie para alguém que vive com dor no punho"). Hashtags: 3 a 5, incluindo 1 local (#ortopedistacampinas ou #campinas).
 Comum a post e carrossel:
 - title = frase-gancho curta (até 60 caracteres) que vai na arte; topic = mao | ortopedia | dor | regenerativa | esporte.
 - caption (legenda): 600–1.100 caracteres; 1ª linha = gancho forte; parágrafos curtos; conteúdo educativo útil; 1 chamada para ação variando entre "salve para lembrar", "compartilhe com quem precisa" e "leia o artigo completo (link na bio)"; 3–6 hashtags específicas; termine com:
@@ -58,7 +62,7 @@ CARROSSEL (sempre 7 artes: capa + EXATAMENTE 5 cards + fechamento; o Make lê 7 
 - Uma ideia por card, frases diretas, sem travessão longo, sem números sem fonte.
 - Documento em "conteudos": id, tipo "carrossel", date, semana, title, topic, caption, refs, status "rascunho", note "", imgs: [7 urls "/_blob/..."], img_ids: [7 ids] (passo 6), updated_at.
 
-### 4. Stories (3 por semana: terça, quinta e sábado; depois de aprovados, a tarefa diária agenda no Metricool para as 8h20)
+### 4. Stories (3 por semana: terça, quinta e sábado; depois de aprovados, a tarefa diária agenda no Metricool para as 12h)
 O Metricool gratuito publica no máximo 20 itens por mês somando todas as redes (cada rede conta 1). A conta fica assim: 3 stories por semana (cerca de 13 por mês) + 1 carrossel por semana no TikTok (até 5 por mês) = até 18. Não crie mais de 3 stories por semana.
 Cada story chama para a publicação do feed daquele dia (ou para o artigo do dia). Formatos que alternam: "Novo post", "Você sabia?", "Mito ou verdade?", "Dica do dia", "Pergunta frequente", "Pausa rápida".
 - id = "<AAAA-MM-DD>-<palavra-chave>"; arte story-<id>.jpg (1080x1920).

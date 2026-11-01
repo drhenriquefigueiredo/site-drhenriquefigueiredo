@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Feed das redes sociais (Instagram; o Facebook recebe por compartilhamento do Instagram).
 
-Gera content/redes/feed.xml, lido pelo Make todo dia às 8h. Fica FORA de site/ e é servido pelo
+Gera content/redes/feed.xml, lido pelo Make todo dia (18h30; Instagram e Facebook). Fica FORA de site/ e é servido pelo
 GitHub (raw.githubusercontent.com), então publicar nas redes não gasta créditos da Netlify.
 
 Por dia: no máximo 1 publicação no feed (artigo, post ou carrossel; o artigo tem prioridade) e 1 story.
   - artigos aprovados de content/posts/ com data <= hoje -> legenda "instagram", arte content/capas/ig-<slug>.jpg
   - itens aprovados de content/redes/fila/*.json com data <= hoje:
-      {"date", "id", "tipo": "post" | "carrossel" | "story", "title", "topic", "caption"}
+      {"date", "id", "tipo": "post" | "carrossel" | "story", "title", "topic", "caption", "artigo"?}
+      "artigo": slug -> carrossel do artigo, publicado no lugar da arte única no dia do artigo
       post -> content/capas/ig-<id>.jpg · carrossel -> content/capas/car-<id>-NN.jpg · story -> content/capas/story-<id>.jpg
 Cada item leva <category> (foto | carrossel | story) e o carrossel tem sempre 7 imagens (capa + 5 + final), e um <enclosure> por imagem (o carrossel tem várias).
 Um item só entra quando as artes existem (geradas pelo workflow "Gerar capas com IA").
@@ -51,6 +52,17 @@ def itens(hoje):
             continue
         alvo = stories if tipo == 'story' else feed
         dia = q['date']
+        if tipo == 'carrossel' and q.get('artigo'):
+            # carrossel do artigo: entra NO LUGAR da arte única do artigo, no dia em que ele foi publicado
+            # (carrossel tem cerca de 2x o alcance da imagem única). Só quando foi aprovado para esse mesmo dia;
+            # aprovado depois, vira um carrossel comum (próximo dia livre).
+            g = f"redes-{q['artigo']}"
+            imgs = imagens(q)
+            if dia in feed and feed[dia]['guid'] == g and len(imgs) == 7 \
+                    and all(os.path.exists(os.path.join(RAIZ, x)) for x in imgs):
+                feed[dia] = {'guid': f"carrossel-{q['id']}", 'date': dia, 'tipo': 'carrossel', 'title': q.get('title', ''),
+                             'link': feed[dia]['link'], 'caption': q.get('caption', ''), 'imgs': imgs}
+                continue
         while dia in alvo and dia < hoje:  # dia ocupado: vai para o próximo dia livre
             dia = (dt.date.fromisoformat(dia) + dt.timedelta(days=1)).isoformat()
         if dia in alvo:
