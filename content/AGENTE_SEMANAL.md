@@ -44,7 +44,7 @@ Formatos que mais geram salvamentos e compartilhamentos (use-os): "3 sinais de q
 Plano por semana social (terça a domingo), no máximo 1 publicação de feed por dia, de 5 a 6 por semana:
 - CARROSSEL DO ARTIGO para cada artigo da semana (3 a 4): sai NO LUGAR da arte única do artigo. Dados de 2026 para contas de 1 a 5 mil seguidores: carrossel tem cerca de 2,4 vezes as visualizações da imagem única e 9 vezes mais salvamentos. id = "<data do artigo>-art-<palavra-chave>", date = data do artigo, campo extra "artigo": slug do artigo (no documento e no pedido). Capa = título do artigo; os 5 cards = os pontos principais do texto; final = {"titulo": "Leia o artigo completo", "texto": "O link está no perfil. Salve este post e envie para quem precisa."}. Legenda termina com "Leia o artigo completo no link da bio.".
 - 1 CARROSSEL educativo extra + 1 POST de arte única ("mito ou verdade", frase forte) nos dias sem artigo. Deixe pelo menos 1 dia da semana sem feed.
-- O PRIMEIRO carrossel da semana também sai no TikTok (tarefa "Redes extras", 20h): escreva a legenda pensando nos dois públicos e use também "drhenriquefigueiredo.com.br" além de "link na bio".
+- O PRIMEIRO carrossel da semana também sai no TikTok (tarefa diária, 20h): escreva a legenda pensando nos dois públicos e use também "drhenriquefigueiredo.com.br" além de "link na bio".
 - Engajamento (o Instagram valoriza envios e comentários): toda legenda termina com 1 pergunta simples que convide a comentar (ex.: "Você já sentiu isso ao acordar?") e 1 chamada para enviar ("Envie para alguém que vive com dor no punho"). Hashtags: 3 a 5, incluindo 1 local (#ortopedistacampinas ou #campinas).
 Comum a post e carrossel:
 - title = frase-gancho curta (até 60 caracteres) que vai na arte; topic = mao | ortopedia | dor | regenerativa | esporte.
@@ -62,12 +62,15 @@ CARROSSEL (sempre 7 artes: capa + EXATAMENTE 5 cards + fechamento; o Make lê 7 
 - Uma ideia por card, frases diretas, sem travessão longo, sem números sem fonte.
 - Documento em "conteudos": id, tipo "carrossel", date, semana, title, topic, caption, refs, status "rascunho", note "", imgs: [7 urls "/_blob/..."], img_ids: [7 ids] (passo 6), updated_at.
 
-### 4. Stories (3 por semana: terça, quinta e sábado; depois de aprovados, a tarefa diária agenda no Metricool para as 12h)
-O Metricool gratuito publica no máximo 20 itens por mês somando todas as redes (cada rede conta 1). A conta fica assim: 3 stories por semana (cerca de 13 por mês) + 1 carrossel por semana no TikTok (até 5 por mês) = até 18. Não crie mais de 3 stories por semana.
+### 4. Stories (2 por semana: terça e sexta; depois de aprovados, a tarefa diária agenda no Metricool para as 12h)
+O Metricool gratuito publica no máximo 20 itens por mês somando todas as redes (cada rede conta 1). Divisão fixa por semana: 2 stories + 1 thread + 1 carrossel no TikTok = 4 por semana (16 a 20 por mês). Não crie mais de 2 stories nem mais de 1 thread por semana. Stories interativos (enquete, caixinha de perguntas, contagem) não podem ser automáticos: sugira 1 por semana em "stories" para o Dr. Henrique postar pelo app.
 Cada story chama para a publicação do feed daquele dia (ou para o artigo do dia). Formatos que alternam: "Novo post", "Você sabia?", "Mito ou verdade?", "Dica do dia", "Pergunta frequente", "Pausa rápida".
 - id = "<AAAA-MM-DD>-<palavra-chave>"; arte story-<id>.jpg (1080x1920).
 - Pedido: content/capas/pedidos/<id>.json = {"slug": id, "formato": "story", "topic", "rotulo" (até 20 caracteres), "title" (frase principal, até 70 caracteres), "texto" (até 70 caracteres, a chamada), "rodape": "@drhenriquefigueiredo"}. Sem "prompt" (arte só tipográfica, mais leve e legível).
 - Documento em "conteudos": id, tipo "story", date, semana, title, topic, texto, status "rascunho", note "", img_url/img_id (passo 6), updated_at.
+
+### 4b. Threads (1 por semana, publicado pelo Metricool às 12h30 do dia marcado)
+Crie com ArtifactData (coleção "conteudos") 1 documento tipo "thread" por semana, num dia sem outra thread. Campos: id "thread-AAAA-MM-DD-<slug>", tipo "thread", date, semana (segunda-feira da semana), topic, title curto, texto, status "rascunho", note "", updated_at. Texto: até 500 caracteres contando espaços e quebras de linha; só texto (sem imagem, link, telefone, preço ou hashtag; no máximo 1 emoji); uma ideia, linguagem simples, termina com uma pergunta ao leitor; reveze "sinal ou sintoma", "mito × fato" e "pergunta aberta"; mesmas regras do CFM; fatos só com literatura real; não repita tema das últimas 4 semanas.
 
 ### 5. Vídeos (opcional) e ideias extras de stories
 O Dr. Henrique grava só esporadicamente: NADA do plano depende de vídeo. Crie no máximo 1 roteiro por semana (tipo "reels", id "<segunda-da-semana-social>-reels-1", date, semana, title, topic, refs, status "rascunho", roteiro: {duracao "30–45 s", gancho, cenas [{fala, imagem, texto_tela}], fechamento, legenda, tiktok, dicas}), simples, para gravar com o celular em 10 minutos, se ele quiser.
