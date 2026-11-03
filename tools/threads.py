@@ -7,7 +7,7 @@ adapta a legenda ao limite de 500 caracteres do Threads (tira as hashtags, corta
 se for artigo, termina com o link do blog) e publica a imagem ou o carrossel.
 
 Segredos no GitHub (Settings > Secrets and variables > Actions):
-  THREADS_USER_ID  ID do perfil do Threads (@drhenriquefigueiredo)
+  THREADS_USER_ID  (opcional) ID do perfil do Threads; sem ele usa o dono do token
   THREADS_TOKEN    token de longa duração (60 dias), permissões threads_basic e threads_content_publish
   THREADS_CHAVE    senha qualquer, só para guardar o token renovado de forma cifrada
 O token é renovado sozinho a cada 7 dias e fica cifrado em content/redes/threads_token.enc
@@ -131,9 +131,9 @@ def main():
         for guid, texto, imgs in pendentes(feitos, hoje):
             print(f'--- {guid} ({len(texto)} caracteres, {len(imgs)} imagem/ns)\n{texto}\n')
         return
-    uid, token = os.environ.get('THREADS_USER_ID'), os.environ.get('THREADS_TOKEN')
-    if not (uid and token):
-        print('Threads: segredos THREADS_USER_ID/THREADS_TOKEN ainda não configurados; nada a fazer.')
+    uid, token = os.environ.get('THREADS_USER_ID') or 'me', os.environ.get('THREADS_TOKEN')
+    if not token:
+        print('Threads: segredo THREADS_TOKEN ainda não configurado; nada a fazer.')
         return
     lanc = json.load(open(os.path.join(RAIZ, 'content', 'lancamento.json'), encoding='utf-8'))
     if not lanc.get('iniciado') or hoje.isoformat() < lanc.get('data_inicio', ''):
