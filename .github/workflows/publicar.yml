@@ -1,7 +1,12 @@
-name: Publicar artigos do dia
+name: Publicar artigos
+# Créditos da Netlify (plano gratuito: 300/mês; cada publicação do site gasta 15).
+# - Todo dia: atualiza só o feed das redes (fora de site/, servido pelo GitHub) -> commit com [skip netlify], não gasta crédito.
+# - Segunda-feira 06:05 (ou "Run workflow" manual): publica no site, de uma vez, os artigos aprovados da semana inteira
+#   (data até o domingo seguinte). Assim o link de cada post nas redes já funciona no dia em que ele sai,
+#   e o site gasta cerca de 4 publicações por mês em vez de uma por artigo.
 on:
   schedule:
-    - cron: "5 9 * * *"   # 06:05 em Brasília (rede de segurança)
+    - cron: "5 9 * * *"   # 06:05 em Brasília; o site só é publicado na de segunda
   workflow_dispatch: {}
   push:
     branches: [main]
@@ -16,29 +21,44 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
+      - name: Publicar o site nesta execução?
+        id: modo
+        run: |
+          DIA=$(TZ=America/Sao_Paulo date +%u)   # 1 = segunda
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || { [ "${{ github.event_name }}" = "schedule" ] && [ "$DIA" = "1" ]; }; then
+            echo "site=1" >> "$GITHUB_OUTPUT"
+            echo "ate=$(TZ=America/Sao_Paulo python3 -c 'import datetime as d; h=d.date.today(); print(h+d.timedelta(days=6-h.weekday()))')" >> "$GITHUB_OUTPUT"
+          else
+            echo "site=0" >> "$GITHUB_OUTPUT"
+          fi
       - name: Conferir capas dos artigos aprovados
         run: |
           pip install --quiet pillow
           python3 tools/garantir_capas.py
       - id: build
+        if: steps.modo.outputs.site == '1'
         run: |
-          python3 tools/build.py | tee saida.json
-          echo "novos=$(python3 -c 'import json;print(" ".join(json.load(open("saida.json"))["publicados_hoje"]))')" >> "$GITHUB_OUTPUT"
+          python3 tools/build.py --hoje "${{ steps.modo.outputs.ate }}" | tee saida.json
+          echo "novos=$(python3 -c 'import json;d=json.load(open("saida.json"));fixos={"blog","home","sitemap","llms","feed","redes"};print(" ".join(s for s in d["alterados"] if s not in fixos))')" >> "$GITHUB_OUTPUT"
       - name: Feed das redes (fora do site, servido pelo GitHub)
         run: python3 tools/redes.py
-      # Créditos da Netlify: só um commit que muda site/ gera publicação (15 créditos).
-      # Quando só content/ muda, o commit leva [skip netlify] e não gasta nada.
       - name: Gravar alterações
         id: grava
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           HOJE=$(TZ=America/Sao_Paulo date +%F)
-          git add -A site
-          if git diff --cached --quiet; then SITE=0; else SITE=1; fi
+          SITE=0
+          if [ "${{ steps.modo.outputs.site }}" = "1" ]; then
+            git add -A site
+            if ! git diff --cached --quiet; then SITE=1; fi
+          else
+            git checkout -- site 2>/dev/null || true
+            git clean -fdq site
+          fi
           git add -A content/posts content/capas content/redes
           if git diff --cached --quiet; then echo "Nada novo hoje."; echo "mudou=0" >> "$GITHUB_OUTPUT"; exit 0; fi
-          if [ "$SITE" = 1 ]; then MSG="Publica artigos de $HOJE"; else MSG="Atualiza o feed das redes de $HOJE [skip netlify]"; fi
+          if [ "$SITE" = 1 ]; then MSG="Publica os artigos da semana (até ${{ steps.modo.outputs.ate }})"; else MSG="Atualiza o feed das redes de $HOJE [skip netlify]"; fi
           git commit -m "$MSG"
           git pull --rebase -q origin main
           git push
