@@ -10,6 +10,12 @@
   force = true
 
 [[redirects]]
+  from = "/avaliacao"
+  to = "https://search.google.com/local/writereview?placeid=ChIJM6rS0dTJyJQRLvmnUbMZBEU"
+  status = 302
+  force = true
+
+[[redirects]]
   from = "/tratamentos-ortopedia"
   to = "/areas-de-atuacao/ortopedia-e-traumatologia/"
   status = 301
