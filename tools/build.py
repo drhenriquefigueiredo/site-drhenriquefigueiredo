@@ -113,7 +113,7 @@ def pagina_artigo(p, todos, molde):
          "image": img, "datePublished": pub, "dateModified": p.get('modified', pub), "inLanguage": "pt-BR",
          "mainEntityOfPage": url, "url": url, "articleSection": rotulo,
          "author": {"@type": "Person", "name": "Dr. Henrique Figueiredo", "url": DOM + '/sobre/', "jobTitle": "Médico ortopedista e cirurgião da mão",
-                    "identifier": "CRM-SP 199832"},
+                    "identifier": "CRM-SP 199832", "sameAs": ["https://www.instagram.com/drhenriquefigueiredo/", "https://www.rededorsaoluiz.com.br/encontre-um-medico/perfil/henrique-carvalho-e-silva-figueiredo"]},
          "reviewedBy": {"@type": "Person", "name": "Dr. Henrique Figueiredo", "url": DOM + '/sobre/'},
          "lastReviewed": p['date'], "publisher": {"@id": DOM + '/#medico'},
          "about": {"@type": "MedicalCondition", "name": p.get('condition', p['title'])},
