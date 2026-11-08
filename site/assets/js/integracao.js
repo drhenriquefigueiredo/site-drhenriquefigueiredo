@@ -118,7 +118,7 @@
     if (/wa\.me|api\.whatsapp\.com|whatsapp:\/\//i.test(h)) ev = 'whatsapp_click';
     else if (/^tel:/i.test(h)) ev = 'phone_click';
     else if (/^mailto:/i.test(h)) ev = 'email_click';
-    else if (/google\.[^/]+\/maps|maps\.app\.goo\.gl|goo\.gl\/maps|waze\.com/i.test(h)) ev = 'map_click';
+    else if (/google\.[^/]+\/maps|maps\.google\.|maps\.app\.goo\.gl|goo\.gl\/maps|waze\.com|maps\.apple\.com/i.test(h)) ev = 'map_click';
     else if (rede(h)) { ev = 'social_click'; extra.social_network = rede(h); }
     if (!ev) return;
     var dados = { event: ev, cta_location: secao(a), link_url: h.split('?')[0], origem: ORIGEM || 'site' };
