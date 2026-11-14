@@ -62,9 +62,9 @@ CARROSSEL (sempre 7 artes: capa + EXATAMENTE 5 cards + fechamento; o Make lê 7 
 - Uma ideia por card, frases diretas, sem travessão longo, sem números sem fonte.
 - Documento em "conteudos": id, tipo "carrossel", date, semana, title, topic, caption, refs, status "rascunho", note "", imgs: [7 urls "/_blob/..."], img_ids: [7 ids] (passo 6), updated_at.
 
-### 4. Stories (2 por semana: terça e sexta; depois de aprovados, a tarefa diária agenda no Metricool para as 12h)
+### 4. Stories (2 por semana: terça e sexta; depois de aprovados, a tarefa diária agenda no Metricool para as 19h, depois do post do feed das 18h30)
 O Metricool gratuito publica no máximo 20 itens por mês somando todas as redes (cada rede conta 1). Divisão fixa por semana: 2 stories + 1 thread + 1 carrossel no TikTok = 4 por semana (16 a 20 por mês). Não crie mais de 2 stories nem mais de 1 thread por semana. Stories interativos (enquete, caixinha de perguntas, contagem) não podem ser automáticos: sugira 1 por semana em "stories" para o Dr. Henrique postar pelo app.
-Cada story chama para a publicação do feed daquele dia (ou para o artigo do dia). Formatos que alternam: "Novo post", "Você sabia?", "Mito ou verdade?", "Dica do dia", "Pergunta frequente", "Pausa rápida".
+Cada story chama para a publicação do feed daquele dia (ou para o artigo do dia). Ele sai às 19h, quando o post do feed (18h30) já está no ar; não escreva chamadas que só façam sentido antes disso. Formatos que alternam: "Novo post", "Você sabia?", "Mito ou verdade?", "Dica do dia", "Pergunta frequente", "Pausa rápida".
 - id = "<AAAA-MM-DD>-<palavra-chave>"; arte story-<id>.jpg (1080x1920).
 - Pedido: content/capas/pedidos/<id>.json = {"slug": id, "formato": "story", "topic", "rotulo" (até 20 caracteres), "title" (frase principal, até 70 caracteres), "texto" (até 70 caracteres, a chamada), "rodape": "@drhenriquefigueiredo"}. Sem "prompt" (arte só tipográfica, mais leve e legível).
 - Documento em "conteudos": id, tipo "story", date, semana, title, topic, texto, status "rascunho", note "", img_url/img_id (passo 6), updated_at.
