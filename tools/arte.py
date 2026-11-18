@@ -88,30 +88,18 @@ def pontos(d, W, y, total, atual, escuro):
 
 
 def slide_capa(p, ia, total, saida):
-    W, H = 1080, 1350
-    base = Image.new('RGB', (W, H), NAVY)
-    if ia and os.path.exists(ia):
-        base.paste(cobrir(Image.open(ia).convert('RGB'), W, 760, 0.3), (0, 0))
-    g = Image.new('L', (1, H))
-    for yy in range(H):
-        g.putpixel((0, yy), int(255 * (0 if yy < 400 else (1 if yy > 760 else (yy - 400) / 360))))
-    base = Image.composite(Image.new('RGB', (W, H), NAVY), base, g.resize((W, H)))
-    d = ImageDraw.Draw(base)
-    d.rectangle([32, 32, W - 33, H - 33], outline=GOLD, width=1)
-    x = 84
-    d.text((x, 700), ROTULO.get(p.get('topic'), 'Ortopedia').upper(), font=F('Manrope-Bold.ttf', 26), fill=GOLD)
-    d.line([x, 744, x + 70, 744], fill=GOLD, width=3)
-    f, ls = caber(d, nfc(p['title']), 'EBGaramond-SemiBold.ttf', [80, 72, 66, 60, 54], W - 2 * x, 4)
-    escrever(d, x, 772, ls, f, WHITE, 1.05)
-    fa = F('Manrope-SemiBold.ttf', 24)
-    seta = 'Arraste para o lado  »'
-    d.text((W - x - d.textlength(seta, font=fa), H - 215), seta, font=fa, fill=GOLD_SOFT)
-    lg = logo('logo-branco.png', 200)
-    base.paste(lg, (x, H - 84 - lg.height), lg)
-    d.text((x + 220, H - 84 - lg.height // 2 - 10), ID_LONGA, font=F('Manrope-Medium.ttf', 18), fill=GOLD_SOFT)
-    pontos(d, W, H - 56, total, 0, True)
+    """Capa do carrossel num dos 3 modelos de tools/modelos.py (campos opcionais: modelo, gancho, apoio)."""
+    import sys
+    sys.path.insert(0, AQUI)
+    import modelos
+    tem_foto = bool(ia and os.path.exists(ia))
+    m = modelos.escolher(p['slug'], p.get('modelo'), tem_foto)
+    g, a = modelos.dividir(p['title'], p.get('gancho'), p.get('apoio'))
+    foto = Image.open(ia).convert('RGB') if tem_foto else None
+    tema = ROTULO.get(p.get('topic'), 'Ortopedia')
     nome = os.path.join(saida, f"car-{p['slug']}-01.jpg")
-    base.save(nome, quality=90, optimize=True, progressive=True)
+    modelos.capa_ig(foto, tema, g, a, m, carrossel_total=total, centro=tuple(p.get('centro_capa', (0.5, 0.4)))).save(
+        nome, quality=90, optimize=True, progressive=True)
     return nome
 
 

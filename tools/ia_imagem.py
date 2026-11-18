@@ -8,6 +8,7 @@ Para cada pedido sem content/capas/ia-<slug>.jpg:
 Nada em site/ muda aqui: as capas só entram no site no dia da publicação (tools/build.py).
 """
 import glob, hashlib, json, os, subprocess, sys, time
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
@@ -17,7 +18,7 @@ ROTULO = {'mao': 'Mão e punho', 'ortopedia': 'Ortopedia', 'dor': 'Dor', 'regene
 ESTILO = ('editorial medical illustration, soft realistic 3d render, calm navy blue and warm gold palette, '
           'clean minimal background, soft studio lighting, high detail, professional healthcare magazine style')
 SEM = 'no text, no letters, no faces, no blood'
-LAYOUT = '3'  # mude para refazer todas as capas quando o desenho (tools/capa.py) mudar
+LAYOUT = '4'  # mude para refazer todas as capas quando o desenho (tools/capa.py) mudar
 ESTILO_FOTO = ('professional editorial photography, photorealistic, natural soft light, shallow depth of field, '
                'muted navy blue and warm beige palette, clean minimal composition, anatomically correct')
 NEGATIVO = ('text, letters, words, watermark, logo, signature, face, portrait, blood, wound, surgery, gore, '
@@ -133,8 +134,12 @@ def montar(p):
         subprocess.run(cmd, check=True)
         os.remove(t.name)
         return
-    subprocess.run([sys.executable, os.path.join(AQUI, 'capa.py'), '--slug', p['slug'], '--titulo', p['title'],
-                    '--tema', ROTULO[p['topic']], '--saida', CAPAS, '--imagem', ia], check=True)
+    cmd = [sys.executable, os.path.join(AQUI, 'capa.py'), '--slug', p['slug'], '--titulo', p['title'],
+           '--tema', ROTULO[p['topic']], '--saida', CAPAS, '--imagem', ia]
+    for campo in ('modelo', 'gancho', 'apoio'):
+        if p.get(campo):
+            cmd += [f'--{campo}', p[campo]]
+    subprocess.run(cmd, check=True)
 
 
 def _h(txt):
@@ -147,7 +152,9 @@ def conferir_mudancas(pedidos):
     os.makedirs(os.path.join(CAPAS, 'meta'), exist_ok=True)
     for p in pedidos:
         m = os.path.join(CAPAS, 'meta', f"{p['slug']}.json")
-        texto = p['title'] + '|' + p.get('topic', '') + '|' + LAYOUT
+        import modelos
+        texto = '|'.join([p['title'], p.get('topic', ''), LAYOUT, p.get('gancho', ''), p.get('apoio', ''),
+                          modelos.escolher(p['slug'], p.get('modelo'))])
         if formato(p) != 'post':
             texto += '|' + json.dumps({k: p.get(k) for k in ('formato', 'slides', 'final', 'texto', 'rotulo', 'rodape')},
                                       ensure_ascii=False, sort_keys=True)

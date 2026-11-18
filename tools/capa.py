@@ -5,15 +5,16 @@ capa.py --slug SLUG --titulo "Título" --tema "Mão e punho" --saida DIR
 Gera:
   DIR/blog-<slug>.jpg   1200x600  (site, Google, Facebook, og:image)
   DIR/blog-<slug>.webp  1200x600
-  DIR/ig-<slug>.jpg     1080x1350 (Instagram, 4:5)
+  DIR/ig-<slug>.jpg     1080x1350 (Instagram, 4:5; modelo foto, claro ou recorte, ver tools/modelos.py)
 """
-import argparse, hashlib, os, textwrap, unicodedata
+import argparse, hashlib, os, sys, textwrap, unicodedata
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
 SITE = os.path.join(RAIZ, 'site') if os.path.isdir(os.path.join(RAIZ, 'site')) else RAIZ
 IMG = os.path.join(SITE, 'assets', 'img')
+sys.path.insert(0, AQUI)
 F = lambda n, s: ImageFont.truetype(os.path.join(AQUI, 'fonts', n), s)
 
 NAVY = (14, 30, 58); NAVY2 = (21, 41, 75); GOLD = (184, 151, 90); GOLD_SOFT = (216, 197, 157); WHITE = (255, 255, 255)
@@ -116,33 +117,16 @@ def capa_larga(slug, titulo, tema, saida):
     base.save(os.path.join(saida, f'blog-{slug}.webp'), quality=80, method=6)
 
 
-def capa_instagram(slug, titulo, tema, saida):
-    W, H = 1080, 1350
-    base = Image.new('RGB', (W, H), NAVY)
-    foto = cobrir(foto_para(slug), W, 760, 0.12)
-    base.paste(foto, (0, 0))
-    # degradê vertical da foto para o navy
-    g = Image.new('L', (1, H))
-    for yy in range(H):
-        t = 0 if yy < 420 else (1 if yy > 760 else (yy - 420) / 340)
-        g.putpixel((0, yy), int(255 * t))
-    base = Image.composite(Image.new('RGB', (W, H), NAVY), base, g.resize((W, H)))
-    d = ImageDraw.Draw(base)
-    d.rectangle([32, 32, W - 33, H - 33], outline=GOLD, width=1)
-    x = 84
-    ft = F('Manrope-Bold.ttf', 26)
-    d.text((x, 720), tema.upper(), font=ft, fill=GOLD)
-    d.line([x, 764, x + 70, 764], fill=GOLD, width=3)
-    f, linhas = titulo_ajustado(d, titulo, W - 2 * x, 5, [76, 70, 64, 58, 52])
-    y = 796
-    for l in linhas:
-        d.text((x, y), l, font=f, fill=WHITE)
-        y += int(f.size * 1.06)
-    lg = logo(230)
-    base.paste(lg, (x, H - 84 - lg.height), lg)
-    fr = F('Manrope-Medium.ttf', 20)
-    d.text((x + 250, H - 84 - lg.height // 2 - 12), 'Médico ortopedista · CRM-SP 199.832 · RQE 102783 / 124871', font=fr, fill=GOLD_SOFT)
-    base.save(os.path.join(saida, f'ig-{slug}.jpg'), quality=88, optimize=True, progressive=True)
+def capa_instagram(slug, titulo, tema, saida, modelo=None, gancho=None, apoio=None, centro=(0.5, 0.4)):
+    """Arte do Instagram em um dos 3 modelos de tools/modelos.py (rodízio para o feed não repetir)."""
+    import modelos
+    tem_foto = bool(IMAGEM_IA and os.path.exists(IMAGEM_IA))
+    m = modelos.escolher(slug, modelo, tem_foto)
+    g, a = modelos.dividir(titulo, gancho, apoio)
+    foto = Image.open(IMAGEM_IA).convert('RGB') if tem_foto else None
+    modelos.capa_ig(foto, tema, g, a, m, centro=centro).save(
+        os.path.join(saida, f'ig-{slug}.jpg'), quality=88, optimize=True, progressive=True)
+    return m
 
 
 if __name__ == '__main__':
@@ -150,9 +134,12 @@ if __name__ == '__main__':
     ap.add_argument('--slug', required=True); ap.add_argument('--titulo', required=True)
     ap.add_argument('--tema', required=True); ap.add_argument('--saida', required=True)
     ap.add_argument('--imagem', help='imagem de IA para o fundo (padrão: <saida>/ia-<slug>.jpg, se existir)')
+    ap.add_argument('--modelo', help='foto | claro | recorte (padrão: rodízio pela data de publicação)')
+    ap.add_argument('--gancho', help='texto curto e grande da capa (padrão: título até o 1º ":" ou "?")')
+    ap.add_argument('--apoio', help='frase curta embaixo do gancho')
     a = ap.parse_args()
     IMAGEM_IA = a.imagem or os.path.join(a.saida, f'ia-{a.slug}.jpg')
     os.makedirs(a.saida, exist_ok=True)
     capa_larga(a.slug, a.titulo, a.tema, a.saida)
-    capa_instagram(a.slug, a.titulo, a.tema, a.saida)
-    print('ok')
+    m = capa_instagram(a.slug, a.titulo, a.tema, a.saida, a.modelo, a.gancho, a.apoio)
+    print('ok', m)
