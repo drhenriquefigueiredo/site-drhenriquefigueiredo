@@ -4,7 +4,8 @@
 Por quê: no perfil, Reels alcançam muito mais gente que imagem e carrossel, e o Dr. Henrique
 não precisa gravar nada. O vídeo usa exatamente as artes já aprovadas, na mesma ordem.
 
-Saída: content/capas/reel-<id>.mp4 (1080x1920, 30 fps, H.264, ~25 s, áudio mudo).
+Saída: content/capas/reel-<id>.mp4 (1080x1920, 30 fps, H.264, ~30 s), com a trilha original
+de content/redes/trilha-reel.m4a (música composta por tools/trilha.py, sem direito autoral de terceiros).
 Só gera o que ainda não existe ou o que teve arte refeita (reel-<id>.txt guarda a impressão digital das artes).
 Uso: python3 tools/reel.py [--id <id>] [--forcar]
 """
@@ -27,6 +28,7 @@ TOPO = 170          # arte um pouco acima do centro: a legenda do Reel cobre a p
 FPS = 30
 DUR = [3.2, 4.6, 4.6, 4.6, 4.6, 4.6, 3.6]   # capa, 5 cards (tempo de leitura), fechamento
 TRANS = 0.45
+TRILHA = os.path.join(RAIZ, "content", "redes", "trilha-reel.m4a")  # música original (tools/trilha.py)
 
 
 def carrosseis():
@@ -58,7 +60,8 @@ def gerar(cid, forcar=False):
     # Só gera o que falta ou o que teve arte refeita (compara a impressão digital das 7 artes,
     # porque no GitHub as datas dos arquivos mudam a cada checkout).
     marca = os.path.join(CAPAS, f"reel-{cid}.txt")
-    digital = hashlib.sha256(b"".join(open(a, "rb").read() for a in artes)).hexdigest()
+    partes = artes + ([TRILHA] if os.path.exists(TRILHA) else [])
+    digital = hashlib.sha256(b"".join(open(a, "rb").read() for a in partes)).hexdigest()
     if os.path.exists(saida) and not forcar:
         if not os.path.exists(marca) or open(marca).read().strip() == digital:
             if not os.path.exists(marca):
@@ -85,11 +88,18 @@ def gerar(cid, forcar=False):
             atual = f"x{n}"
             desloc += DUR[n]
         total = sum(DUR) + TRANS
-        cmd = ["ffmpeg", "-y", "-loglevel", "error", *entradas,
-               "-f", "lavfi", "-t", f"{total:.3f}", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100",
-               "-filter_complex", ";".join(filtros), "-map", f"[{atual}]", "-map", "7:a",
+        if os.path.exists(TRILHA):
+            audio = ["-i", TRILHA]
+            filtros.append(f"[7:a]atrim=0:{total:.3f},asetpts=PTS-STARTPTS,volume=0.8,"
+                           f"afade=t=out:st={total-1.8:.3f}:d=1.8[a]")
+            mapa_audio = "[a]"
+        else:
+            audio = ["-f", "lavfi", "-t", f"{total:.3f}", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"]
+            mapa_audio = "7:a"
+        cmd = ["ffmpeg", "-y", "-loglevel", "error", *entradas, *audio,
+               "-filter_complex", ";".join(filtros), "-map", f"[{atual}]", "-map", mapa_audio,
                "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p",
-               "-profile:v", "high", "-r", str(FPS), "-c:a", "aac", "-b:a", "64k", "-shortest",
+               "-profile:v", "high", "-r", str(FPS), "-c:a", "aac", "-b:a", "128k", "-shortest",
                "-movflags", "+faststart", saida]
         subprocess.run(cmd, check=True)
         open(marca, "w").write(digital + "\n")
