@@ -1,6 +1,9 @@
 # Configuração do Netlify — Dr. Henrique Figueiredo
 [build]
   publish = "."
+  # Proteção dos créditos do plano gratuito: só publica se algo dentro de site/ mudou
+  # desde a última publicação (commits só de content/, tools/ ou workflows não gastam crédito).
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
 
 # Redirecionamentos das URLs antigas para as novas páginas
 [[redirects]]

@@ -102,6 +102,9 @@ def pagina_artigo(p, todos, molde):
     url = f'{DOM}/blog/{p["slug"]}/'
     img = DOM + p['img']
     titulo_seo = p.get('seo_title') or p['title']
+    # O Google corta o título por volta de 60 caracteres: se ficar longo, a parte que sobra é a assinatura.
+    if len(titulo_seo) > 65 and titulo_seo.endswith(' | Dr. Henrique Figueiredo'):
+        titulo_seo = titulo_seo[:-len(' | Dr. Henrique Figueiredo')]
     rotulo, (area_url, area_nome) = TEMAS[p['topic']]
     pub = f'{p["date"]}T09:00:00-03:00'
     ld = [
