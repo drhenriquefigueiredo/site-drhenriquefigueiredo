@@ -42,10 +42,6 @@ jobs:
           echo "novos=$(python3 -c 'import json;d=json.load(open("saida.json"));fixos={"blog","home","sitemap","llms","feed","redes"};print(" ".join(s for s in d["alterados"] if s not in fixos))')" >> "$GITHUB_OUTPUT"
       - name: Feed das redes (fora do site, servido pelo GitHub)
         run: python3 tools/redes.py
-      - name: Reels automáticos a partir dos carrosséis (content/capas/reel-<id>.mp4)
-        run: |
-          command -v ffmpeg >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; }
-          python3 tools/reel.py || echo "Reel não gerado hoje (segue sem ele)."
       - name: Gravar alterações
         id: grava
         run: |
