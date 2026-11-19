@@ -5,7 +5,7 @@ Por quê: no perfil, Reels alcançam muito mais gente que imagem e carrossel, e 
 não precisa gravar nada. O vídeo usa exatamente as artes já aprovadas, na mesma ordem.
 
 Saída: content/capas/reel-<id>.mp4 (1080x1920, 30 fps, H.264, ~25 s, áudio mudo).
-Só gera o que ainda não existe (ou se alguma arte for mais nova que o vídeo).
+Só gera o que ainda não existe; artes refeitas pedem --forcar.
 Uso: python3 tools/reel.py [--id <id>] [--forcar]
 """
 import argparse
@@ -54,9 +54,10 @@ def quadro(arte, destino):
 def gerar(cid, forcar=False):
     artes = [os.path.join(CAPAS, f"car-{cid}-0{n}.jpg") for n in range(1, 8)]
     saida = os.path.join(CAPAS, f"reel-{cid}.mp4")
+    # Só gera o que falta (no GitHub as datas dos arquivos mudam a cada checkout, então não dá
+    # para comparar horários). Se as artes forem refeitas, rode com --id <id> --forcar.
     if os.path.exists(saida) and not forcar:
-        if os.path.getmtime(saida) >= max(os.path.getmtime(a) for a in artes):
-            return None
+        return None
     tmp = tempfile.mkdtemp()
     try:
         entradas, filtros = [], []
