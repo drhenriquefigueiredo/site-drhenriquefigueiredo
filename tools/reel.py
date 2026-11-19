@@ -5,11 +5,12 @@ Por quê: no perfil, Reels alcançam muito mais gente que imagem e carrossel, e 
 não precisa gravar nada. O vídeo usa exatamente as artes já aprovadas, na mesma ordem.
 
 Saída: content/capas/reel-<id>.mp4 (1080x1920, 30 fps, H.264, ~25 s, áudio mudo).
-Só gera o que ainda não existe; artes refeitas pedem --forcar.
+Só gera o que ainda não existe ou o que teve arte refeita (reel-<id>.txt guarda a impressão digital das artes).
 Uso: python3 tools/reel.py [--id <id>] [--forcar]
 """
 import argparse
 import glob
+import hashlib
 import os
 import re
 import shutil
@@ -54,10 +55,15 @@ def quadro(arte, destino):
 def gerar(cid, forcar=False):
     artes = [os.path.join(CAPAS, f"car-{cid}-0{n}.jpg") for n in range(1, 8)]
     saida = os.path.join(CAPAS, f"reel-{cid}.mp4")
-    # Só gera o que falta (no GitHub as datas dos arquivos mudam a cada checkout, então não dá
-    # para comparar horários). Se as artes forem refeitas, rode com --id <id> --forcar.
+    # Só gera o que falta ou o que teve arte refeita (compara a impressão digital das 7 artes,
+    # porque no GitHub as datas dos arquivos mudam a cada checkout).
+    marca = os.path.join(CAPAS, f"reel-{cid}.txt")
+    digital = hashlib.sha256(b"".join(open(a, "rb").read() for a in artes)).hexdigest()
     if os.path.exists(saida) and not forcar:
-        return None
+        if not os.path.exists(marca) or open(marca).read().strip() == digital:
+            if not os.path.exists(marca):
+                open(marca, "w").write(digital + "\n")
+            return None
     tmp = tempfile.mkdtemp()
     try:
         entradas, filtros = [], []
@@ -86,6 +92,7 @@ def gerar(cid, forcar=False):
                "-profile:v", "high", "-r", str(FPS), "-c:a", "aac", "-b:a", "64k", "-shortest",
                "-movflags", "+faststart", saida]
         subprocess.run(cmd, check=True)
+        open(marca, "w").write(digital + "\n")
         return saida
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
