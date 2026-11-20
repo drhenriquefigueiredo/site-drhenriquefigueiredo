@@ -65,7 +65,7 @@ Instagram (ig-<slug>.jpg e a capa dos carrosséis) em 3 modelos que se revezam p
 ## Como as redes se conversam (desde 20/11/2026)
 
 Um conteúdo aprovado vira, sem ninguém repostar à mão:
-- **Instagram feed 18h30 + Página do Facebook 18h30** (Make, cenário do feed RSS). A Página tem pouco alcance (25 seguidores); o alcance do Facebook vem do perfil pessoal, que recebe os posts e stories do Instagram pelo compartilhamento automático da Central de Contas da Meta (configuração dele no app, não é automação nossa).
+- **Instagram feed 18h30 + Página do Facebook 18h30** (Make, cenário do feed RSS). A Página tem pouco alcance (25 seguidores); o alcance do Facebook está no perfil pessoal. A Meta não compartilha sozinha no perfil pessoal o que é publicado por ferramentas (Make, Metricool), só o que é postado no app; por isso o aviso das 18h35 pede que ele compartilhe o carrossel no perfil.
 - **Story 19h** (Metricool) chamando para o post que acabou de sair.
 - **TikTok 18h** (Metricool): o primeiro carrossel da semana.
 - **Threads 12h30** (Metricool): 1 texto por semana, com pergunta no fim.
