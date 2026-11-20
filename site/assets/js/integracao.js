@@ -18,7 +18,10 @@
   function aplicar(v) {
     var s = v === 'granted' ? 'granted' : 'denied';
     gtag('consent', 'update', { analytics_storage: s });
-    if (s === 'granted') window.dataLayer.push({ event: 'consent_granted' });
+    if (s === 'granted') {
+      window.dataLayer.push({ event: 'consent_granted' });
+      if (window.dhfMetricool) window.dhfMetricool(); // contagem de visitas no Metricool, só com autorização
+    }
   }
 
   // ---------- Aviso de cookies ----------
