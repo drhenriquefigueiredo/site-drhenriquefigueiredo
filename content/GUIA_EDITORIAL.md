@@ -69,7 +69,9 @@ Um conteúdo aprovado vira, sem ninguém repostar à mão:
 - **Story 19h** (Metricool) chamando para o post que acabou de sair.
 - **TikTok 18h** (Metricool): o primeiro carrossel da semana.
 - **Threads 12h30** (Metricool): 1 texto por semana, com pergunta no fim.
-- **Google** todo dia de manhã (tarefa diária), levando ao artigo do blog.
+- **Google** todo dia às 08h00 (Make lê content/redes/google.json, que a tarefa diária grava às 06h07), levando ao artigo do blog. O Windsor saiu em 21/11 (até 30/11 fica só como reserva, se o Make falhar).
+- **Avaliações do Google**: Make (08h00) → mesma planilha dos comentários (rede google) → rascunho na voz dele (08h17) → "sim" dele → Make publica na manhã seguinte.
+- **Números**: tudo no Metricool (Instagram, Facebook, Threads, TikTok, anúncios da Meta e, desde 20/11, o Perfil da Empresa no Google).
 - **Comentários do Instagram**: Make (08h00) → planilha "Comentários — respostas humanizadas" → rascunho na voz dele (08h17) → ele marca "sim" → Make publica na manhã seguinte.
 - **Direct e Messenger**: perguntas sugeridas (onde fica, convênio, horário) e boas-vindas no Messenger, no Meta Business Suite. No Instagram já existe um robô de boas-vindas anterior; não duplicar.
-- Limites gratuitos: Metricool 20 publicações por mês (cada rede conta 1); Make 1.000 créditos e 2 cenários ativos (os dois em uso).
+- Ferramentas: só Make (publica) e Metricool (agenda e mede). Limites gratuitos: Metricool 20 publicações por mês (cada rede conta 1); Make 1.000 créditos e 2 cenários ativos (os dois em uso: feed das 18h30 e rotina das 08h00).
