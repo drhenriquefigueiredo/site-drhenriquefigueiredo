@@ -7,6 +7,16 @@ Médico ortopedista e cirurgião da mão em Campinas/SP. CRM-SP 199.832 · RQE 1
 - Tom acolhedor, claro e seguro. Primeira pessoa só em situações naturais ("no consultório, é comum…"); sem autopromoção.
 - Evitar travessões longos em excesso, "não é X, mas Y", frases de efeito e clichês.
 
+## Voz humana (desde 20/11; vale para redes, Google, respostas e blog)
+Escreva como o Dr. Henrique fala com um paciente no consultório, não como um folheto ou um robô:
+- Abra por uma cena comum e reconhecível, sem identificar ninguém: "Toda semana alguém me conta que acorda com a mão dormente." / "Uma pergunta que ouço quase todo dia no consultório:". Nunca descreva um paciente real.
+- Nas redes, primeira pessoa natural ("eu costumo explicar assim", "no consultório eu mostro"); no blog, com moderação.
+- Palavras do paciente antes do termo técnico ("formiga", "trava", "dá choque", "estala"). Uma ideia por parágrafo, frases de até 20 palavras.
+- Varie a forma de um post para o outro (pergunta, história curta, mito, número com fonte, "o que eu faria"); dois posts seguidos nunca começam do mesmo jeito.
+- Proibido o que denuncia texto de máquina: "Descubra", "Neste post", "Vamos lá", "Você sabia que", listas sempre de 3 itens, travessões em série, emojis decorativos, fechamento genérico ("Cuide-se!", "Sua saúde agradece").
+- Termine com uma pergunta de verdade, fácil de responder em uma palavra ("Em qual mão você sente mais?"), para puxar conversa nos comentários.
+- Respostas a comentários e avaliações: 1 a 3 frases, começam pelo nome da pessoa quando houver, respondem exatamente o que ela disse, agradecem sem exagero, nunca dão diagnóstico, dose ou conduta e nunca confirmam que a pessoa é paciente; dúvida individual = convite gentil para avaliação pelo WhatsApp do link da bio. Nada de texto igual para duas pessoas.
+
 ## Regras obrigatórias (Resolução CFM 2.336/2023)
 - Nada de superlativos ou comparação: "o melhor", "referência", "o mais procurado", "líder", "único".
 - Nada de promessa ou garantia de resultado, "cura definitiva", "sem dor", "100%".
