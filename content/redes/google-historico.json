@@ -1,93 +1,100 @@
 [
- {
-  "data": "2026-12-07",
-  "slug": "uso-excessivo-de-celular-e-dor-nas-maos",
-  "angulo": "agendado em 26/10 (segunda-feira)",
-  "cta_type": "LEARN_MORE",
-  "origem": "já agendado no Google"
- },
- {
-  "data": "2026-11-30",
-  "slug": "o-que-e-dor-miofascial-e-por-que-ela-e-tao-confundida-com-outros-problemas",
-  "angulo": "agendado em 26/10 (segunda-feira)",
-  "cta_type": "LEARN_MORE",
-  "origem": "já agendado no Google"
- },
- {
-  "data": "2026-11-23",
-  "slug": "lesao-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda",
-  "angulo": "agendado em 26/10 (segunda-feira)",
-  "cta_type": "LEARN_MORE",
-  "origem": "já agendado no Google"
- },
- {
-  "data": "2026-11-21",
-  "slug": "lesoes-no-crossfit-punho-ombro-e-coluna",
-  "angulo": "artigo novo",
-  "cta_type": "LEARN_MORE",
-  "summary": "Pratica CrossFit ou treino funcional? Ombro, coluna e joelho são as regiões mais afetadas, e o punho também aparece com frequência.\n\nNo artigo reuni o que os estudos mostram sobre as lesões mais comuns, os fatores de risco e como treinar com mais segurança.\n\nConteúdo informativo; não substitui a avaliação médica.\nDr. Henrique Figueiredo · Médico ortopedista · CRM-SP 199.832 · RQE 102783 / 124871"
- },
- {
-  "data": "2026-11-20",
-  "slug": "agendamento",
-  "angulo": "agendamento",
-  "cta_type": "BOOK",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-11-19",
-  "slug": "viscossuplementacao-com-acido-hialuronico-para-quem-e-indicada",
-  "angulo": "artigo novo",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-11-18",
-  "slug": "cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-apos-o-tratamento",
-  "angulo": "pergunta frequente",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-11-17",
-  "slug": "dor-neuropatica-quando-a-dor-vem-do-nervo",
-  "angulo": "artigo novo",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-11-15",
-  "slug": "epicondilite-lateral-cotovelo-de-tenista-causas-e-tratamento",
-  "angulo": "artigo novo",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-11-14",
-  "slug": "sedentarismo-e-dor-como-o-corpo-reage-quando-paramos-de-nos-movimentar",
-  "angulo": "prevenção/hábitos",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-11-13",
-  "slug": "rizartrose-por-que-a-base-do-polegar-doi-e-o-que-pode-ser-feito",
-  "angulo": "artigo novo",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-10-28",
-  "slug": "dor-nao-e-sinonimo-de-envelhecimento-quando-investigar",
-  "angulo": "mito x verdade",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- },
- {
-  "data": "2026-10-27",
-  "slug": "dor-cronica-por-que-algumas-dores-persistem-mesmo-apos-exames-normais",
-  "angulo": "como a condição funciona",
-  "cta_type": "LEARN_MORE",
-  "origem": "Windsor (antes de 21/11)"
- }
+  {
+    "data": "2026-12-07",
+    "slug": "uso-excessivo-de-celular-e-dor-nas-maos",
+    "angulo": "agendado em 26/10 (segunda-feira)",
+    "cta_type": "LEARN_MORE",
+    "origem": "já agendado no Google"
+  },
+  {
+    "data": "2026-11-30",
+    "slug": "o-que-e-dor-miofascial-e-por-que-ela-e-tao-confundida-com-outros-problemas",
+    "angulo": "agendado em 26/10 (segunda-feira)",
+    "cta_type": "LEARN_MORE",
+    "origem": "já agendado no Google"
+  },
+  {
+    "data": "2026-11-25",
+    "slug": "formigamento-nas-maos-quando-e-tunel-do-carpo-e-quando-e-outra-coisa",
+    "angulo": "artigo novo",
+    "cta_type": "LEARN_MORE",
+    "summary": "Mão formigando? Nem sempre é túnel do carpo. Os dedos afetados e o momento em que o formigamento aparece ajudam a descobrir a origem: punho, cotovelo, pescoço ou outras causas.\n\nNo artigo explico como diferenciar e quais sinais pedem avaliação logo.\n\nConteúdo informativo; não substitui a avaliação médica.\nDr. Henrique Figueiredo · Médico ortopedista e cirurgião da mão · CRM-SP 199.832 · RQE 102783 / 124871"
+  },
+  {
+    "data": "2026-11-23",
+    "slug": "lesao-esportiva-quando-o-corpo-consegue-se-recuperar-sozinho-e-quando-precisa-de-ajuda",
+    "angulo": "agendado em 26/10 (segunda-feira)",
+    "cta_type": "LEARN_MORE",
+    "origem": "já agendado no Google"
+  },
+  {
+    "data": "2026-11-21",
+    "slug": "lesoes-no-crossfit-punho-ombro-e-coluna",
+    "angulo": "artigo novo",
+    "cta_type": "LEARN_MORE",
+    "summary": "Pratica CrossFit ou treino funcional? Ombro, coluna e joelho são as regiões mais afetadas, e o punho também aparece com frequência.\n\nNo artigo reuni o que os estudos mostram sobre as lesões mais comuns, os fatores de risco e como treinar com mais segurança.\n\nConteúdo informativo; não substitui a avaliação médica.\nDr. Henrique Figueiredo · Médico ortopedista · CRM-SP 199.832 · RQE 102783 / 124871"
+  },
+  {
+    "data": "2026-11-20",
+    "slug": "agendamento",
+    "angulo": "agendamento",
+    "cta_type": "BOOK",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-11-19",
+    "slug": "viscossuplementacao-com-acido-hialuronico-para-quem-e-indicada",
+    "angulo": "artigo novo",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-11-18",
+    "slug": "cisto-sinovial-recidiva-entenda-por-que-ele-pode-voltar-apos-o-tratamento",
+    "angulo": "pergunta frequente",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-11-17",
+    "slug": "dor-neuropatica-quando-a-dor-vem-do-nervo",
+    "angulo": "artigo novo",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-11-15",
+    "slug": "epicondilite-lateral-cotovelo-de-tenista-causas-e-tratamento",
+    "angulo": "artigo novo",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-11-14",
+    "slug": "sedentarismo-e-dor-como-o-corpo-reage-quando-paramos-de-nos-movimentar",
+    "angulo": "prevenção/hábitos",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-11-13",
+    "slug": "rizartrose-por-que-a-base-do-polegar-doi-e-o-que-pode-ser-feito",
+    "angulo": "artigo novo",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-10-28",
+    "slug": "dor-nao-e-sinonimo-de-envelhecimento-quando-investigar",
+    "angulo": "mito x verdade",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  },
+  {
+    "data": "2026-10-27",
+    "slug": "dor-cronica-por-que-algumas-dores-persistem-mesmo-apos-exames-normais",
+    "angulo": "como a condição funciona",
+    "cta_type": "LEARN_MORE",
+    "origem": "Windsor (antes de 21/11)"
+  }
 ]
