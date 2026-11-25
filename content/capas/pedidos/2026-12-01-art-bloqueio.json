@@ -1,0 +1,36 @@
+{
+ "slug": "2026-12-01-art-bloqueio",
+ "formato": "carrossel",
+ "topic": "dor",
+ "title": "Dor que não passa? O que é o bloqueio de nervo",
+ "gancho": "Dor que não passa?",
+ "apoio": "O que é o bloqueio de nervo",
+ "slides": [
+  {
+   "titulo": "O que é",
+   "texto": "É a aplicação de um anestésico, às vezes com corticoide, ao redor do nervo que leva a dor de uma região, como o ombro ou o joelho."
+  },
+  {
+   "titulo": "Guiado por ultrassom",
+   "texto": "O ultrassom mostra o nervo, as estruturas vizinhas e o trajeto da agulha durante a aplicação. Em geral, o procedimento é feito sem internação."
+  },
+  {
+   "titulo": "Não é infiltração na articulação",
+   "texto": "Na infiltração, o medicamento vai para dentro da articulação. No bloqueio, o alvo é o nervo que leva a sensação de dor daquela região."
+  },
+  {
+   "titulo": "Ele não cura: abre uma janela",
+   "texto": "O alívio dura um período, que varia de pessoa para pessoa. É a chance de dormir melhor e avançar na fisioterapia e nos exercícios, que são a base."
+  },
+  {
+   "titulo": "Para salvar: quando conversar sobre isso",
+   "texto": "Dor que persiste apesar do tratamento inicial, atrapalha o sono ou impede a reabilitação. A indicação depende do diagnóstico e é sempre individual."
+  }
+ ],
+ "final": {
+  "titulo": "Leia o artigo completo",
+  "texto": "O link está no perfil. Salve este post e envie para quem precisa."
+ },
+ "artigo": "bloqueio-de-nervo-para-dor-o-que-e-e-quando-e-indicado",
+ "pexels_id": 7298445
+}
