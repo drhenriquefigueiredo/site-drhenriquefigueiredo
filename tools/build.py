@@ -19,13 +19,13 @@ RAIZ = os.path.dirname(AQUI)
 SITE = os.path.join(RAIZ, 'site')
 CONTENT = os.path.join(RAIZ, 'content')
 DOM = 'https://drhenriquefigueiredo.com.br'
-WA = 'https://wa.me/5519999280514?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Henrique%20Figueiredo.'
+WA = 'https://wa.me/5519998959280?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Henrique%20Figueiredo.'
 
 
 def wa_artigo(titulo):
     """WhatsApp com a origem (o integracao.js troca 'pelo site' pelo canal de chegada) e o artigo lido."""
     from urllib.parse import quote
-    return 'https://wa.me/5519999280514?text=' + quote(f'Olá! Vim pelo site, li o artigo "{titulo}" e gostaria de agendar uma consulta com o Dr. Henrique Figueiredo.', safe='')
+    return 'https://wa.me/5519998959280?text=' + quote(f'Olá! Vim pelo site, li o artigo "{titulo}" e gostaria de agendar uma consulta com o Dr. Henrique Figueiredo.', safe='')
 TEMAS = {  # chave: (rótulo, área de atuação para o link do autor)
     'mao': ('Mão e punho', ('/areas-de-atuacao/cirurgia-da-mao/', 'Cirurgia da Mão')),
     'ortopedia': ('Ortopedia', ('/areas-de-atuacao/ortopedia-e-traumatologia/', 'Ortopedia e Traumatologia')),
@@ -227,7 +227,7 @@ def pagina_artigo(p, todos, molde):
 </main>'''
     pagina = head + metas + corpo_cab + main + rodape
     # o molde é outra página do blog: todos os botões de WhatsApp passam a citar este artigo
-    return re.sub(r'https://wa\.me/5519999280514\?text=[^"\'<\s]*', lambda m: e(wa_artigo(p['title'])), pagina)
+    return re.sub(r'https://wa\.me/5519998959280\?text=[^"\'<\s]*', lambda m: e(wa_artigo(p['title'])), pagina)
 
 
 def refazer_blog_index(todos):
