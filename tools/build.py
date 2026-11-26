@@ -227,6 +227,8 @@ def pagina_artigo(p, todos, molde):
 </main>'''
     pagina = head + metas + corpo_cab + main + rodape
     # o molde é outra página do blog: todos os botões de WhatsApp passam a citar este artigo
+    # número antigo (até 26/11/2026) vira o novo, caso algum texto aprovado ainda o traga
+    pagina = re.sub(r'wa\.me/5519999280514\b', 'wa.me/5519998959280', pagina).replace('99928-0514', '99895-9280')
     return re.sub(r'https://wa\.me/5519998959280\?text=[^"\'<\s]*', lambda m: e(wa_artigo(p['title'])), pagina)
 
 
